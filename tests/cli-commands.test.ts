@@ -94,4 +94,15 @@ Detailed notes on engine logic.
     expect(typeof parsed.staleCount).toBe('number');
     expect(Array.isArray(parsed.reports)).toBe(true);
   });
+
+  it('should support check --quick --sync-index and sync manifest', () => {
+    const output = execSync('bun run src/cli/index.ts check --quick --sync-index', {
+      encoding: 'utf8',
+      cwd: process.cwd(),
+    });
+
+    expect(output).toBeDefined();
+    expect(output).toContain('Manifest docs/brief/INDEX.md disinkronkan.');
+  });
 });
+

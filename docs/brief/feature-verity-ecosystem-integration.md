@@ -8,9 +8,9 @@ verity:
         timestamp: 2026-09-08T10:32:47.266Z
     - path: src/cli/commands/check.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
-        fingerprint: 888b17cd8850a6ac86b12959d1a6ddee8ca3404941ede7e5c210487c8f84a982
-        timestamp: 2026-09-08T10:32:47.283Z
+        commitSha: 9d8d0ab8796d61f1dbcb8b4397331fa665428786
+        fingerprint: c4258424bfd7c5e47638a7c2645aa3a1293fcc1d9cf2f7b8d8024e5792cbeb45
+        timestamp: 2026-09-08T10:49:46.631Z
     - path: src/core/anchor/manifest.ts
       provenance:
         commitSha: af1af9c49c877674d236f57288616999f93312fc
@@ -126,9 +126,6 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `af1af9c49c877674d236f57288616999f93312fc`
+- **Completion Commit**: `9d8d0ab8796d61f1dbcb8b4397331fa665428786`
 - **Anchors**:
-  - `src/cli/commands/link.ts`
   - `src/cli/commands/check.ts`
-  - `src/core/anchor/manifest.ts`
-  - `src/cli/index.ts`

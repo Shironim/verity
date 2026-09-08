@@ -42,6 +42,15 @@ export async function runCheckCommand(
       if (existsSync(cacheFile) && !statusOutput) {
         const cacheContent = JSON.parse(readFileSync(cacheFile, 'utf8')) as QuickCacheData;
         if (cacheContent.headSha === headSha && cacheContent.allValid) {
+          if (options.syncIndex) {
+            try {
+              const manifestGen = new BriefManifestGenerator(rootDir);
+              await manifestGen.generateAndSync();
+            } catch (err: any) {
+              console.error(`Warning: Gagal memperbarui manifest index: ${err.message}`);
+            }
+          }
+
           if (options.json) {
             console.log(
               JSON.stringify(
@@ -57,6 +66,9 @@ export async function runCheckCommand(
             );
           } else {
             console.log(`\x1b[32m[CACHE HIT]\x1b[0m Working tree bersih & commit ${headSha.slice(0, 8)} terverifikasi valid.`);
+            if (options.syncIndex) {
+              console.log('[OK] Manifest docs/brief/INDEX.md disinkronkan.');
+            }
           }
           return;
         }
