@@ -3,24 +3,24 @@ verity:
   anchors:
     - path: src/cli/commands/link.ts
       provenance:
-        commitSha: 094bc304f062e7caf68f7f4e3af4370d6f8b3a9f
+        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
         fingerprint: e1bcc16e089fed691396e03ab4365c45594a14ccf7224ff5b9962752430e7319
-        timestamp: 2026-09-08T05:30:46.955Z
+        timestamp: 2026-09-08T05:32:23.554Z
     - path: src/cli/commands/check.ts
       provenance:
-        commitSha: 094bc304f062e7caf68f7f4e3af4370d6f8b3a9f
+        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
         fingerprint: 3ae71664970a70db482155d41f89e79bd17c3e2a1f7398250294f52a04c93f4a
-        timestamp: 2026-09-08T05:30:46.980Z
+        timestamp: 2026-09-08T05:32:23.584Z
     - path: src/core/anchor/manifest.ts
       provenance:
-        commitSha: 094bc304f062e7caf68f7f4e3af4370d6f8b3a9f
+        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
         fingerprint: 24783360fb2fff15e7d27b7b6d60c639cc6c9dca89c6f90003d27a0416e95954
-        timestamp: 2026-09-08T05:30:46.990Z
+        timestamp: 2026-09-08T05:32:23.593Z
     - path: src/cli/index.ts
       provenance:
-        commitSha: 094bc304f062e7caf68f7f4e3af4370d6f8b3a9f
+        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
         fingerprint: 501a4f9be1de81c00bde01f94e32877b3f534bd5eb93deb1129df69fdfcb9b8a
-        timestamp: 2026-09-08T05:30:46.995Z
+        timestamp: 2026-09-08T05:32:23.597Z
 ---
 
 # Brief: Verity Ecosystem Integration (Multi-Anchor, Derived Manifest, Quick Check)
@@ -126,7 +126,7 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `094bc304f062e7caf68f7f4e3af4370d6f8b3a9f`
+- **Completion Commit**: `147b025c979ca3d6948fa0d28a9d04923b60d2fe`
 - **Anchors**:
   - `src/cli/commands/link.ts`
   - `src/cli/commands/check.ts`
