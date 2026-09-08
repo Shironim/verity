@@ -39,6 +39,15 @@ describe('CLI Components & Dispatcher Integration', () => {
     expect(result.rawMatchedContent).toContain('return "hello"');
   });
 
+  it('should dispatch to PythonParser for .py files', async () => {
+    const pyCode = `def hello():\n    return "hello"`;
+    const result = await dispatcher.parse('main.py', pyCode, 'hello');
+
+    expect(result.found).toBe(true);
+    expect(result.targetSymbol).toBe('hello');
+    expect(result.rawMatchedContent).toContain('return "hello"');
+  });
+
   it('should dispatch to FallbackParser for unknown extensions', async () => {
     const customConfig = `server_port = 8080\nenv = production`;
     const result = await dispatcher.parse('config.ini', customConfig);

@@ -6,6 +6,7 @@ import { VueSfcParser } from './mixed/vue';
 import { AstroParser } from './mixed/astro';
 import { PhpParser } from './php';
 import { GoParser } from './go';
+import { PythonParser } from './python';
 import { FallbackParser } from './fallback';
 
 export class ParserDispatcher {
@@ -15,6 +16,7 @@ export class ParserDispatcher {
     new TypeScriptParser(),
     new PhpParser(),
     new GoParser(),
+    new PythonParser(),
   ];
 
   private readonly fallbackParser = new FallbackParser();

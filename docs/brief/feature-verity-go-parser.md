@@ -3,14 +3,14 @@ verity:
   anchors:
     - path: src/core/parser/go.ts
       provenance:
-        commitSha: ed93bdeaca7fe2196fa9485266eebd503362b5c7
+        commitSha: 518748e1f54bca3e11e555e0e96f52756a55144e
         fingerprint: 869ca1b04b107681b9dc60051134c0cb19a2b70af1cb06e62745bef795390bc5
-        timestamp: 2026-09-08T11:39:21.185Z
+        timestamp: 2026-09-08T11:56:35.238Z
     - path: src/core/parser/dispatcher.ts
       provenance:
-        commitSha: ed93bdeaca7fe2196fa9485266eebd503362b5c7
-        fingerprint: 0dbd3101377f8db74f889e5e3eeed99467261a328df6d403bb14a720d318c8f0
-        timestamp: 2026-09-08T11:39:21.189Z
+        commitSha: 518748e1f54bca3e11e555e0e96f52756a55144e
+        fingerprint: d45eb986df94d5b03c8d5684c7f0e3d1c7564b165649446ffe6bc18a18af02a6
+        timestamp: 2026-09-08T11:56:35.251Z
 ---
 
 # Brief: Native Go (.go) Dedicated AST Parser
@@ -91,7 +91,7 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `ed93bdeaca7fe2196fa9485266eebd503362b5c7`
+- **Completion Commit**: `518748e1f54bca3e11e555e0e96f52756a55144e`
 - **Anchors**:
   - `src/core/parser/go.ts`
   - `src/core/parser/dispatcher.ts`
