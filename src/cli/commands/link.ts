@@ -66,6 +66,27 @@ export async function runLinkCommand(
     const relativeTargetPath = targetPath.replace(/\\/g, '/');
     const displayTarget = `${relativeTargetPath}${targetSymbol ? '#' + targetSymbol : ''}`;
 
+    // Shared Module Guardrail: Berikan warning jika file ditautkan tanpa symbol padahal ditautkan oleh >= 3 brief
+    if (!targetSymbol) {
+      try {
+        const scanner = new AnchorScanner(rootDir);
+        const existingAnchors = scanner.scan();
+        const references = existingAnchors.filter(
+          (a) => a.targetPath.replace(/\\/g, '/') === relativeTargetPath
+        );
+        if (references.length >= 3) {
+          console.warn(
+            `\n\x1b[33m[PERINGATAN]\x1b[0m Target '${relativeTargetPath}' adalah modul bersama (shared hub) yang ditautkan oleh ${references.length} spesifikasi.`
+          );
+          console.warn(
+            `             Disarankan menggunakan symbol anchor ('${relativeTargetPath}#NamaSimbol') untuk mencegah cascading STALE saat modul ini diperbarui di masa mendatang.\n`
+          );
+        }
+      } catch {
+        // Abaikan kegagalan pemeriksaan scanner
+      }
+    }
+
     if (options.inline) {
       const inlineTag = InlineAnchorHandler.formatInlineTag({
         targetPath: relativeTargetPath,
@@ -96,6 +117,14 @@ export async function runLinkCommand(
   specContent = updateMarkdownProvenanceSection(specContent, headSha, linkedAnchors.map((a) => a.target));
 
   writeFileSync(resolvedSpec, specContent, 'utf8');
+
+  // Perbarui centralized manifest cache (.verity/manifest.json)
+  try {
+    const scanner = new AnchorScanner(rootDir);
+    scanner.scan(undefined, { forceFresh: true });
+  } catch {
+    // Abaikan kegagalan refresh manifest
+  }
 
   console.log(`[OK] ${linkedAnchors.length} anchor berhasil ditautkan ke ${specFilePath}`);
   console.log(`  -> Git SHA: ${headSha.slice(0, 8)}`);

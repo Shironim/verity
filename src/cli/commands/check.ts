@@ -80,7 +80,7 @@ export async function runCheckCommand(
 
   const scanner = new AnchorScanner(rootDir);
   const dispatcher = new ParserDispatcher();
-  const anchors = scanner.scan(targetScanPath);
+  const anchors = scanner.scan(targetScanPath, { forceFresh: options.forceFresh });
 
   if (anchors.length === 0) {
     if (options.json) {
@@ -93,11 +93,38 @@ export async function runCheckCommand(
 
   const reports: StalenessReport[] = [];
   let hasStale = false;
+  const isGit = gitClient.isGitRepository();
+  const changedFilesCache = new Map<string, Set<string>>();
+
+  const getChangedFiles = (sha?: string): Set<string> => {
+    const key = sha || 'HEAD';
+    if (!changedFilesCache.has(key)) {
+      changedFilesCache.set(key, gitClient.getChangedFilesSince(sha));
+    }
+    return changedFilesCache.get(key)!;
+  };
 
   for (const anchor of anchors) {
     const fullTargetPath = resolve(rootDir, anchor.targetPath);
+    const normalizedTarget = anchor.targetPath.replace(/\\/g, '/');
 
     if (!existsSync(fullTargetPath)) {
+      // Deteksi apakah file target dipindahkan (git move / rename)
+      const renamedTo = isGit
+        ? gitClient.detectRenamedFile(anchor.targetPath, anchor.provenance.commitSha)
+        : null;
+
+      if (renamedTo) {
+        reports.push({
+          anchor,
+          status: 'MOVED',
+          relocatedPath: renamedTo,
+          message: `File target dipindahkan ke '${renamedTo}'. Jalankan 'verity link' untuk memperbarui relokasi.`,
+        });
+        hasStale = true;
+        continue;
+      }
+
       reports.push({
         anchor,
         status: 'NOT_FOUND',
@@ -105,6 +132,21 @@ export async function runCheckCommand(
       });
       hasStale = true;
       continue;
+    }
+
+    // Git-Diff Scoped Auditing (O(changed) alih-alih O(total)):
+    // Jika repositori git valid dan file target tidak termutasi di git sejak baseline commit,
+    // langsung tandai OK tanpa pembacaan ulang dan parsing AST penuh.
+    if (isGit && !options.forceFresh) {
+      const changedFiles = getChangedFiles(anchor.provenance.commitSha);
+      if (!changedFiles.has(normalizedTarget)) {
+        reports.push({
+          anchor,
+          status: 'OK',
+          currentFingerprint: anchor.provenance.fingerprint,
+        });
+        continue;
+      }
     }
 
     try {
@@ -220,12 +262,17 @@ function printFormattedReport(reports: StalenessReport[]) {
         ? '\x1b[32m[ OK ]\x1b[0m'
         : status === 'STALE'
         ? '\x1b[31m[ STALE ]\x1b[0m'
+        : status === 'MOVED'
+        ? '\x1b[36m[ MOVED ]\x1b[0m'
         : '\x1b[33m[ ' + status + ' ]\x1b[0m';
 
     console.log(`${statusBadge} ${anchor.specFile} -> ${target}`);
     console.log(`       Baseline SHA: ${anchor.provenance.commitSha.slice(0, 8)} (${anchor.kind})`);
 
-    if (status === 'STALE') {
+    if (status === 'MOVED') {
+      console.log(`       Relocated to: ${report.relocatedPath}`);
+      console.log(`       Action      : Jalankan 'verity link ${anchor.specFile} ${report.relocatedPath}' untuk memperbarui.`);
+    } else if (status === 'STALE') {
       if (reconciliation) {
         console.log(`       Changed by  : ${reconciliation.author} (${reconciliation.commitSha.slice(0, 8)})`);
         console.log(`       Commit Msg  : ${reconciliation.commitMessage}`);

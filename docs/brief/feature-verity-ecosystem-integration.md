@@ -3,24 +3,24 @@ verity:
   anchors:
     - path: src/cli/commands/link.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
-        fingerprint: 78ed5d36ebab8d82858cbbca14df392419a685f7ed01b81e8c918167b8d53254
-        timestamp: 2026-09-08T10:32:47.266Z
+        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
+        fingerprint: b3b2aca3881a383954da5195e9cdd80362d80bec09a1d633e66b242d7c592958
+        timestamp: 2026-09-08T12:05:40.005Z
     - path: src/cli/commands/check.ts
       provenance:
-        commitSha: 9d8d0ab8796d61f1dbcb8b4397331fa665428786
-        fingerprint: c4258424bfd7c5e47638a7c2645aa3a1293fcc1d9cf2f7b8d8024e5792cbeb45
-        timestamp: 2026-09-08T10:49:46.631Z
+        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
+        fingerprint: bb775b5cfa4b3349efd8a6a8c43509d6418355fbdebd63445ec499c35fb37660
+        timestamp: 2026-09-08T12:05:40.022Z
     - path: src/core/anchor/manifest.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
         fingerprint: 753204c8e1d3c3c5d70c8562acc219eee0b0f17ea808bceddfc605572c8429d0
-        timestamp: 2026-09-08T10:32:47.290Z
+        timestamp: 2026-09-08T12:05:40.028Z
     - path: src/cli/index.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
         fingerprint: b022b01b0ddf80f057559b39ca1bbd61a01eacce176d21ee4e89e5000b17a463
-        timestamp: 2026-09-08T10:32:47.294Z
+        timestamp: 2026-09-08T12:05:40.031Z
 ---
 
 # Brief: Verity Ecosystem Integration (Multi-Anchor, Derived Manifest, Quick Check)
@@ -126,6 +126,9 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `9d8d0ab8796d61f1dbcb8b4397331fa665428786`
+- **Completion Commit**: `730a5e789f7cad1250583ad4be363366c02dfdae`
 - **Anchors**:
+  - `src/cli/commands/link.ts`
   - `src/cli/commands/check.ts`
+  - `src/core/anchor/manifest.ts`
+  - `src/cli/index.ts`

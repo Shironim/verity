@@ -15,7 +15,7 @@ export interface Anchor {
   line?: number;
 }
 
-export type StalenessStatus = 'OK' | 'STALE' | 'NOT_FOUND' | 'ERROR';
+export type StalenessStatus = 'OK' | 'STALE' | 'NOT_FOUND' | 'MOVED' | 'ERROR';
 
 export interface CommitMetadata {
   author: string;
@@ -28,6 +28,7 @@ export interface StalenessReport {
   anchor: Anchor;
   status: StalenessStatus;
   currentFingerprint?: string;
+  relocatedPath?: string;
   reconciliation?: CommitMetadata;
   message?: string;
 }
