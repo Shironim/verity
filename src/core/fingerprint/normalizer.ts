@@ -33,16 +33,22 @@ export class FingerprintNormalizer {
     return text
       // Normalisasi line endings
       .replace(/\r\n/g, '\n')
-      // Hapus inline comments kosmetik (// ...) tapi pertahankan teks fungsional
+      // Hapus inline comments kosmetik (// ...)
       .replace(/\/\/[^\n]*/g, '')
       // Hapus block comments (/* ... */)
       .replace(/\/\*[\s\S]*?\*\//g, '')
+      // Hapus HTML/Vue template comments (<!-- ... -->)
+      .replace(/<!--[\s\S]*?-->/g, '')
       // Normalisasi quotes tunggal ke ganda untuk keseragaman string literal
       .replace(/'([^'\\]*(?:\\.[^'\\]*)*)'/g, '"$1"')
-      // Hilangkan semicolons di akhir statement yang sering dihapus/ditambah formatter
-      .replace(/;\s*$/gm, '')
+      // Hilangkan semicolons di akhir baris / sebelum kurung tutup
+      .replace(/;\s*([}\n]|$)/gm, '$1')
       // Rapatkan tanda kurung dan delimiter umum
       .replace(/\s*([{}()[\].,:=+\-*/><&|!?:;])\s*/g, '$1')
+      // Hapus trailing comma sebelum closing bracket/parenthesis/brace
+      .replace(/,\s*([}\]\)])/g, '$1')
+      // Hapus semicolon sisa sebelum closing brace
+      .replace(/;\s*([}\]])/g, '$1')
       // Collapse seluruh whitespace berlebih menjadi single space
       .replace(/\s+/g, ' ')
       .trim();
