@@ -1,19 +1,42 @@
 {
-  "name": "verity",
+  "name": "@dimassetoid/verity",
   "version": "0.1.0",
   "description": "Multi-language spec-drift detector based on git provenance and normalized AST fingerprinting",
   "bin": {
     "verity": "./src/cli/index.ts"
   },
   "type": "module",
+  "author": "Dimas Seto",
+  "license": "MIT",
+  "keywords": [
+    "spec-drift",
+    "git-provenance",
+    "ast-fingerprint",
+    "mcp",
+    "model-context-protocol",
+    "vue-sfc",
+    "astro",
+    "documentation-integrity",
+    "spec-driven-development"
+  ],
   "scripts": {
     "start": "bun run src/cli/index.ts",
-    "build": "bun build ./src/cli/index.ts --target bun --outfile ./dist/verity.js --external @vue/compiler-sfc",
+    "build": "bun build ./src/cli/index.ts --target bun --outfile ./dist/verity.js",
+    "build:binary": "bun build ./src/cli/index.ts --compile --outfile ./bin/verity",
+    "build:linux-x64": "bun build ./src/cli/index.ts --compile --target=bun-linux-x64 --outfile ./bin/verity-linux-x64",
+    "build:linux-arm64": "bun build ./src/cli/index.ts --compile --target=bun-linux-arm64 --outfile ./bin/verity-linux-arm64",
+    "build:darwin-arm64": "bun build ./src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile ./bin/verity-darwin-arm64",
+    "build:darwin-x64": "bun build ./src/cli/index.ts --compile --target=bun-darwin-x64 --outfile ./bin/verity-darwin-x64",
+    "build:windows-x64": "bun build ./src/cli/index.ts --compile --target=bun-windows-x64 --outfile ./bin/verity-windows-x64.exe",
+    "build:all": "bun run build:linux-x64 && bun run build:linux-arm64 && bun run build:darwin-arm64 && bun run build:darwin-x64 && bun run build:windows-x64",
     "test": "bun test",
     "check": "bun run src/cli/index.ts check",
-    "link": "bun run src/cli/index.ts link"
+    "link": "bun run src/cli/index.ts link",
+    "init": "bun run src/cli/index.ts init",
+    "mcp": "bun run src/cli/index.ts mcp"
   },
   "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "@vue/compiler-sfc": "^3.5.13",
     "typescript": "^5.7.3",
     "yaml": "^2.7.0"
