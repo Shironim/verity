@@ -7,6 +7,7 @@ import { AstroParser } from './mixed/astro';
 import { PhpParser } from './php';
 import { GoParser } from './go';
 import { PythonParser } from './python';
+import { RustParser } from './rust';
 import { FallbackParser } from './fallback';
 
 export class ParserDispatcher {
@@ -17,6 +18,7 @@ export class ParserDispatcher {
     new PhpParser(),
     new GoParser(),
     new PythonParser(),
+    new RustParser(),
   ];
 
   private readonly fallbackParser = new FallbackParser();

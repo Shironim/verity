@@ -3,14 +3,14 @@ verity:
   anchors:
     - path: src/core/parser/python.ts
       provenance:
-        commitSha: 518748e1f54bca3e11e555e0e96f52756a55144e
+        commitSha: 4b30074d06f8ac2d94707f051295da40c0f67396
         fingerprint: 03c9fc1b302d2a22aa926a0ecc3411543ff5b5bebb53a7fb3af2928e7648e9e9
-        timestamp: 2026-09-08T11:54:32.166Z
+        timestamp: 2026-09-08T12:13:23.236Z
     - path: src/core/parser/dispatcher.ts
       provenance:
-        commitSha: 518748e1f54bca3e11e555e0e96f52756a55144e
-        fingerprint: d45eb986df94d5b03c8d5684c7f0e3d1c7564b165649446ffe6bc18a18af02a6
-        timestamp: 2026-09-08T11:54:32.171Z
+        commitSha: 4b30074d06f8ac2d94707f051295da40c0f67396
+        fingerprint: b3c1c768e6ab7267a6614a8ede8e5c67b894b54d65b61057092223c9383ce565
+        timestamp: 2026-09-08T12:13:23.248Z
 ---
 
 # Brief: Native Python (.py) Dedicated AST Parser
@@ -96,7 +96,7 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `518748e1f54bca3e11e555e0e96f52756a55144e`
+- **Completion Commit**: `4b30074d06f8ac2d94707f051295da40c0f67396`
 - **Anchors**:
   - `src/core/parser/python.ts`
   - `src/core/parser/dispatcher.ts`

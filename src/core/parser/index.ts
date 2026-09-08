@@ -7,3 +7,4 @@ export * from './mixed/astro';
 export * from './php';
 export * from './go';
 export * from './python';
+export * from './rust';
