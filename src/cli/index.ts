@@ -1,6 +1,8 @@
 #!/usr/bin/env bun
 import { runLinkCommand } from './commands/link';
 import { runCheckCommand } from './commands/check';
+import { runMcpCommand } from './commands/mcp';
+import { runInitCommand } from './commands/init';
 import { BriefManifestGenerator } from '../core/anchor/manifest';
 
 const args = process.argv.slice(2);
@@ -11,6 +13,9 @@ function printHelp() {
 Verity — Multi-Language Spec-Drift Detector
 
 Usage:
+  verity init [--yes, -y] [--hook]
+    Inisialisasi direktori docs/brief/, manifest INDEX.md, panduan agent, dan pre-commit hook.
+
   verity link <spec-file> <anchor1> [anchor2 ...] [--inline]
     Menautkan spec markdown ke satu atau beberapa target file/symbol kode dan menyimpan baseline provenance.
     Contoh:
@@ -27,6 +32,9 @@ Usage:
 
   verity index
     Menghasilkan atau menyinkronkan manifest docs/brief/INDEX.md secara otomatis.
+
+  verity mcp
+    Menjalankan Verity sebagai Model Context Protocol (MCP) Server via stdio JSON-RPC.
 
 Options:
   --quick          Gunakan Git HEAD cache untuk verifikasi kilat
@@ -46,6 +54,18 @@ async function main() {
 
   if (command === '--version' || command === '-v') {
     console.log('verity v0.1.0');
+    return;
+  }
+
+  if (command === 'init') {
+    const isYes = args.includes('--yes') || args.includes('-y');
+    const isHook = args.includes('--hook');
+    await runInitCommand({ yes: isYes, hook: isHook });
+    return;
+  }
+
+  if (command === 'mcp') {
+    await runMcpCommand();
     return;
   }
 

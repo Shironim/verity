@@ -3,9 +3,9 @@ verity:
   anchors:
     - path: src/cli/index.ts
       provenance:
-        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
-        fingerprint: 501a4f9be1de81c00bde01f94e32877b3f534bd5eb93deb1129df69fdfcb9b8a
-        timestamp: 2026-09-08T05:32:20.784Z
+        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        fingerprint: b022b01b0ddf80f057559b39ca1bbd61a01eacce176d21ee4e89e5000b17a463
+        timestamp: 2026-09-08T10:32:46.929Z
 ---
 
 # Brief: Verity — Multi-Language Spec-Drift Detector
@@ -131,6 +131,6 @@ Karena codebase adalah greenfield, seluruh file di atas adalah berkas baru (`:L1
 ---
 
 ## Provenance
-- **Completion Commit**: `147b025c979ca3d6948fa0d28a9d04923b60d2fe`
+- **Completion Commit**: `af1af9c49c877674d236f57288616999f93312fc`
 - **Anchors**:
   - `src/cli/index.ts`

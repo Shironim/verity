@@ -3,24 +3,24 @@ verity:
   anchors:
     - path: src/cli/commands/link.ts
       provenance:
-        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
-        fingerprint: e1bcc16e089fed691396e03ab4365c45594a14ccf7224ff5b9962752430e7319
-        timestamp: 2026-09-08T05:32:23.554Z
+        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        fingerprint: 78ed5d36ebab8d82858cbbca14df392419a685f7ed01b81e8c918167b8d53254
+        timestamp: 2026-09-08T10:32:47.266Z
     - path: src/cli/commands/check.ts
       provenance:
-        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
-        fingerprint: 3ae71664970a70db482155d41f89e79bd17c3e2a1f7398250294f52a04c93f4a
-        timestamp: 2026-09-08T05:32:23.584Z
+        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        fingerprint: 888b17cd8850a6ac86b12959d1a6ddee8ca3404941ede7e5c210487c8f84a982
+        timestamp: 2026-09-08T10:32:47.283Z
     - path: src/core/anchor/manifest.ts
       provenance:
-        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
-        fingerprint: 24783360fb2fff15e7d27b7b6d60c639cc6c9dca89c6f90003d27a0416e95954
-        timestamp: 2026-09-08T05:32:23.593Z
+        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        fingerprint: 753204c8e1d3c3c5d70c8562acc219eee0b0f17ea808bceddfc605572c8429d0
+        timestamp: 2026-09-08T10:32:47.290Z
     - path: src/cli/index.ts
       provenance:
-        commitSha: 147b025c979ca3d6948fa0d28a9d04923b60d2fe
-        fingerprint: 501a4f9be1de81c00bde01f94e32877b3f534bd5eb93deb1129df69fdfcb9b8a
-        timestamp: 2026-09-08T05:32:23.597Z
+        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        fingerprint: b022b01b0ddf80f057559b39ca1bbd61a01eacce176d21ee4e89e5000b17a463
+        timestamp: 2026-09-08T10:32:47.294Z
 ---
 
 # Brief: Verity Ecosystem Integration (Multi-Anchor, Derived Manifest, Quick Check)
@@ -126,7 +126,7 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `147b025c979ca3d6948fa0d28a9d04923b60d2fe`
+- **Completion Commit**: `af1af9c49c877674d236f57288616999f93312fc`
 - **Anchors**:
   - `src/cli/commands/link.ts`
   - `src/cli/commands/check.ts`
