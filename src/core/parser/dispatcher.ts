@@ -4,6 +4,7 @@ import type { ParseResult } from '../types';
 import { TypeScriptParser } from './typescript';
 import { VueSfcParser } from './mixed/vue';
 import { AstroParser } from './mixed/astro';
+import { PhpParser } from './php';
 import { FallbackParser } from './fallback';
 
 export class ParserDispatcher {
@@ -11,6 +12,7 @@ export class ParserDispatcher {
     new VueSfcParser(),
     new AstroParser(),
     new TypeScriptParser(),
+    new PhpParser(),
   ];
 
   private readonly fallbackParser = new FallbackParser();

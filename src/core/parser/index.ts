@@ -4,3 +4,4 @@ export * from './typescript';
 export * from './fallback';
 export * from './mixed/vue';
 export * from './mixed/astro';
+export * from './php';
