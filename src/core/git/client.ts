@@ -59,6 +59,19 @@ export class GitClient {
     }
   }
 
+  getDiff(baselineSha: string, targetSha: string = 'HEAD', filePath?: string): string {
+    try {
+      const fileFilter = filePath ? ` -- "${filePath}"` : '';
+      const cmd = `git diff ${baselineSha}..${targetSha}${fileFilter}`;
+      return execSync(cmd, {
+        cwd: this.cwd,
+        encoding: 'utf8',
+      }).trim();
+    } catch {
+      return '';
+    }
+  }
+
   private parseCommitLine(line: string): CommitMetadata | null {
     const parts = line.split('|');
     if (parts.length < 4) return null;

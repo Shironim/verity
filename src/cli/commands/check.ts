@@ -192,7 +192,7 @@ export async function runCheckCommand(
     }
   }
 
-  if (hasStale) {
+  if (options.ci && hasStale) {
     process.exit(1);
   }
 }
