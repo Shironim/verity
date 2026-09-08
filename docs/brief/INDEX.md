@@ -1,14 +1,14 @@
 # Brief Manifest Index
 
 > **Single Source of Truth (SSOT) Manifest**  
-> Terakhir Disinkronkan: 2026-09-08 11:35 UTC  
+> Terakhir Disinkronkan: 2026-09-08 11:39 UTC  
 > Dikelola otomatis oleh: `verity index` (Derived-Only Artifact — Dilarang Diedit Manual)
 
 | Brief | Kategori | Status | Anchors | Ringkasan |
 |---|---|---|:---:|---|
 | [`feature-verity-agent-onboarding-kit.md`](file:///docs/brief/feature-verity-agent-onboarding-kit.md) | `feature` | `Completed` | 2 | 1. Mengimplementasikan perintah `verity init` (`src/cli/commands/init.ts`) dengan flag `--yes`, `--hook`, dan `--template`. |
 | [`feature-verity-ecosystem-integration.md`](file:///docs/brief/feature-verity-ecosystem-integration.md) | `feature` | `Draft` | 4 | Verity saat ini telah memiliki engine inti (AST normalizer, Git client, parser Vue SFC/Astro/TS, serta CLI dasar `link` dan `check`). Namun, untuk mengintegrasikan Verity ke dalam ekosistem autonomous coding bersama skill `to-brief`, `session-handover`, dan Antigravity Lifecycle Hooks, diperlukan penyesuaian arsitektural: |
-| [`feature-verity-go-parser.md`](file:///docs/brief/feature-verity-go-parser.md) | `feature` | `In Progress` | 0 | 1. Mengimplementasikan `GoParser` native berbasis tokenizer deterministik dan *balanced braces scanner* di `src/core/parser/go.ts`. |
+| [`feature-verity-go-parser.md`](file:///docs/brief/feature-verity-go-parser.md) | `feature` | `Completed` | 2 | 1. Mengimplementasikan `GoParser` native berbasis tokenizer deterministik dan *balanced braces scanner* di `src/core/parser/go.ts`. |
 | [`feature-verity-multi-platform-distribution.md`](file:///docs/brief/feature-verity-multi-platform-distribution.md) | `feature` | `Completed` | 4 | 1. Mengonfigurasi target kompilasi multi-platform di `package.json` (`linux-x64`, `linux-arm64`, `darwin-arm64`, `darwin-x64`, `windows-x64`). |
 | [`feature-verity-native-mcp-server.md`](file:///docs/brief/feature-verity-native-mcp-server.md) | `feature` | `Completed` | 3 | Menyediakan native MCP server layer di `src/mcp/server.ts` dan command `verity mcp` di CLI, yang mengekspos 5 core tools: |
 | [`feature-verity-php-parser.md`](file:///docs/brief/feature-verity-php-parser.md) | `feature` | `Completed` | 2 | 1. Mengimplementasikan `PhpParser` di `src/core/parser/php.ts` yang mengimplementasikan `CodeParser`. |

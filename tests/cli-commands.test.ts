@@ -30,6 +30,15 @@ describe('CLI Components & Dispatcher Integration', () => {
     expect(result.rawMatchedContent).toContain('running');
   });
 
+  it('should dispatch to GoParser for .go files', async () => {
+    const goCode = `package main\nfunc Hello() string { return "hello" }`;
+    const result = await dispatcher.parse('main.go', goCode, 'Hello');
+
+    expect(result.found).toBe(true);
+    expect(result.targetSymbol).toBe('Hello');
+    expect(result.rawMatchedContent).toContain('return "hello"');
+  });
+
   it('should dispatch to FallbackParser for unknown extensions', async () => {
     const customConfig = `server_port = 8080\nenv = production`;
     const result = await dispatcher.parse('config.ini', customConfig);
