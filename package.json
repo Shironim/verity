@@ -1,0 +1,25 @@
+{
+  "name": "verity",
+  "version": "0.1.0",
+  "description": "Multi-language spec-drift detector based on git provenance and normalized AST fingerprinting",
+  "bin": {
+    "verity": "./src/cli/index.ts"
+  },
+  "type": "module",
+  "scripts": {
+    "start": "bun run src/cli/index.ts",
+    "build": "bun build ./src/cli/index.ts --target bun --outfile ./dist/verity.js --external @vue/compiler-sfc",
+    "test": "bun test",
+    "check": "bun run src/cli/index.ts check",
+    "link": "bun run src/cli/index.ts link"
+  },
+  "dependencies": {
+    "@vue/compiler-sfc": "^3.5.13",
+    "typescript": "^5.7.3",
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.2.4",
+    "@types/node": "^22.13.5"
+  }
+}
