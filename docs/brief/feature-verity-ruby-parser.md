@@ -1,7 +1,17 @@
+---
+verity:
+  anchors:
+    - path: src/core/parser/ruby.ts
+      provenance:
+        commitSha: b1dc7cacb0068ad225e7814f727fae354ea902f9
+        fingerprint: 62dc92235cd78c2979241399449efd1cc66b0a7d1e2d87c48d4923ba18fb9782
+        timestamp: 2026-09-09T03:59:26.540Z
+---
+
 # Brief: Native Ruby (.rb) Dedicated AST Parser
 
 > **Kategori**: feature  
-> **Status**: Draft  
+> **Status**: Completed  
 > **Tanggal**: 2026-09-08  
 
 ---
@@ -19,15 +29,15 @@
 
 ## Scope & Boundaries
 ### In-Scope
-- [ ] Implementasi `RubyParser` di `src/core/parser/ruby.ts` yang mengimplementasikan `CodeParser`.
-- [ ] Dukungan ekstraksi:
+- [x] Implementasi `RubyParser` di `src/core/parser/ruby.ts` yang mengimplementasikan `CodeParser`.
+- [x] Dukungan ekstraksi:
   - Instance Method: `def method_name(...) ... end` via notasi `ClassName#method_name`, `ClassName::method_name`, atau `method_name`.
   - Class/Singleton Method: `def self.method_name(...) ... end`.
   - Class: `class ClassName [< SuperClass] ... end`.
   - Module: `module ModuleName ... end`.
-- [ ] Pendaftaran ekstensi `.rb` di `src/core/parser/dispatcher.ts`.
-- [ ] Ekspor parser di `src/core/parser/index.ts`.
-- [ ] Pembuatan test suite `tests/ruby-parser.test.ts`.
+- [x] Pendaftaran ekstensi `.rb` di `src/core/parser/dispatcher.ts`.
+- [x] Ekspor parser di `src/core/parser/index.ts`.
+- [x] Pembuatan test suite `tests/ruby-parser.test.ts`.
 - [ ] Verifikasi automated tests (`bun test`) dan audit drift (`verity check`).
 - [ ] Penyegelan provenance via `verity link`.
 
@@ -47,15 +57,15 @@
 ---
 
 ## Acceptance Criteria (Given-When-Then)
-- [ ] **Scenario 1: Ruby Method Extraction (Instance & Class)**:
+- [x] **Scenario 1: Ruby Method Extraction (Instance & Class)**:
   - **Given**: Berkas Ruby `orders_controller.rb` berisi `class OrdersController` dengan `def index ... end` dan `def self.notify ... end`.
   - **When**: Dicari dengan symbol `OrdersController#index` atau `OrdersController::notify`.
   - **Then**: Mengembalikan blok kode method tersebut secara utuh dari `def` hingga pasangan `end` penutupnya.
-- [ ] **Scenario 2: Module & Class Extraction**:
+- [x] **Scenario 2: Module & Class Extraction**:
   - **Given**: Berkas Ruby berisi `module Billing` dan `class Invoice < ApplicationRecord`.
   - **When**: Dicari dengan symbol `Billing` atau `Invoice`.
   - **Then**: Mengembalikan blok definisi class/module lengkap.
-- [ ] **Scenario 3: Formatting & Rubocop Immunity**:
+- [x] **Scenario 3: Formatting & Rubocop Immunity**:
   - **Given**: Dua implementasi kode Ruby yang identik secara logika namun memiliki perbedaan spasi atau komentar `#`.
   - **When**: Keduanya di-fingerprint melalui `RubyParser`.
   - **Then**: Menghasilkan fingerprint SHA-256 yang 100% identik.
@@ -63,14 +73,15 @@
 ---
 
 ## Definition of Done (DoD) Checklist
-- [ ] `RubyParser` terimplementasi di `src/core/parser/ruby.ts`.
-- [ ] Terdaftar di `ParserDispatcher` (`.rb`) dan diekspor di `index.ts`.
-- [ ] Test suite `tests/ruby-parser.test.ts` dibuat dan 100% lulus.
-- [ ] `verity check` berjalan bersih tanpa regresi.
-- [ ] Provenance disegel via `verity link`.
+- [x] `RubyParser` terimplementasi di `src/core/parser/ruby.ts`.
+- [x] Terdaftar di `ParserDispatcher` (`.rb`) dan diekspor di `index.ts`.
+- [x] Test suite `tests/ruby-parser.test.ts` dibuat dan 100% lulus.
+- [x] `verity check` berjalan bersih tanpa regresi.
+- [x] Provenance disegel via `verity link`.
 
 ---
 
 ## Provenance
-- **Completion Commit**: (pending implementasi)
-- **Anchors**: (pending implementasi)
+- **Completion Commit**: `b1dc7cacb0068ad225e7814f727fae354ea902f9`
+- **Anchors**:
+  - `src/core/parser/ruby.ts`

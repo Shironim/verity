@@ -10,3 +10,4 @@ export * from './python';
 export * from './rust';
 export * from './csharp';
 export * from './jvm';
+export * from './ruby';

@@ -8,6 +8,9 @@ import { PhpParser } from './php';
 import { GoParser } from './go';
 import { PythonParser } from './python';
 import { RustParser } from './rust';
+import { CSharpParser } from './csharp';
+import { JvmParser } from './jvm';
+import { RubyParser } from './ruby';
 import { FallbackParser } from './fallback';
 
 export class ParserDispatcher {
@@ -19,6 +22,9 @@ export class ParserDispatcher {
     new GoParser(),
     new PythonParser(),
     new RustParser(),
+    new CSharpParser(),
+    new JvmParser(),
+    new RubyParser(),
   ];
 
   private readonly fallbackParser = new FallbackParser();
@@ -34,7 +40,3 @@ export class ParserDispatcher {
     return await parser.parse(filePath, content, targetSymbol);
   }
 }
-import { CSharpParser } from './csharp';
-    new CSharpParser(),
-import { JvmParser } from './jvm';
-    new JvmParser(),
