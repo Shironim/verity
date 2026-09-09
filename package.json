@@ -2,8 +2,21 @@
   "name": "@dimassetoid/verity",
   "version": "0.1.0",
   "description": "Multi-language spec-drift detector based on git provenance and normalized AST fingerprinting",
+  "main": "dist/index.js",
+  "types": "src/index.ts",
   "bin": {
-    "verity": "./src/cli/index.ts"
+    "verity": "dist/verity.js"
+  },
+  "files": [
+    "dist",
+    "templates"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Shironim/verity.git"
   },
   "type": "module",
   "author": "Dimas Seto",
@@ -21,15 +34,10 @@
   ],
   "scripts": {
     "start": "bun run src/cli/index.ts",
-    "build": "bun build ./src/cli/index.ts --target bun --outfile ./dist/verity.js",
-    "build:binary": "bun build ./src/cli/index.ts --compile --outfile ./bin/verity",
-    "build:linux-x64": "bun build ./src/cli/index.ts --compile --target=bun-linux-x64 --outfile ./bin/verity-linux-x64",
-    "build:linux-arm64": "bun build ./src/cli/index.ts --compile --target=bun-linux-arm64 --outfile ./bin/verity-linux-arm64",
-    "build:darwin-arm64": "bun build ./src/cli/index.ts --compile --target=bun-darwin-arm64 --outfile ./bin/verity-darwin-arm64",
-    "build:darwin-x64": "bun build ./src/cli/index.ts --compile --target=bun-darwin-x64 --outfile ./bin/verity-darwin-x64",
-    "build:windows-x64": "bun build ./src/cli/index.ts --compile --target=bun-windows-x64 --outfile ./bin/verity-windows-x64.exe",
-    "build:all": "bun run build:linux-x64 && bun run build:linux-arm64 && bun run build:darwin-arm64 && bun run build:darwin-x64 && bun run build:windows-x64",
+    "build": "bun build ./src/cli/index.ts --target bun --outfile ./dist/verity.js --external @vue/compiler-sfc --external @modelcontextprotocol/sdk && bun build ./src/index.ts --target bun --outfile ./dist/index.js --external @vue/compiler-sfc --external @modelcontextprotocol/sdk",
     "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun run build && bun test",
     "check": "bun run src/cli/index.ts check",
     "link": "bun run src/cli/index.ts link",
     "init": "bun run src/cli/index.ts init",
