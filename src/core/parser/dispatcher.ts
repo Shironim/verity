@@ -34,3 +34,5 @@ export class ParserDispatcher {
     return await parser.parse(filePath, content, targetSymbol);
   }
 }
+import { CSharpParser } from './csharp';
+    new CSharpParser(),

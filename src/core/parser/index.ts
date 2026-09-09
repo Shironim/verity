@@ -8,3 +8,4 @@ export * from './php';
 export * from './go';
 export * from './python';
 export * from './rust';
+export * from './csharp';

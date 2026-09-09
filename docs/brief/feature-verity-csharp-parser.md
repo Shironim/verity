@@ -1,7 +1,17 @@
+---
+verity:
+  anchors:
+    - path: src/core/parser/csharp.ts
+      provenance:
+        commitSha: b1dc7cacb0068ad225e7814f727fae354ea902f9
+        fingerprint: 521b880b4bbfa2f7617c56aad204528a3b008a43e5fcd07a0073956d146f89b1
+        timestamp: 2026-09-08T12:48:42.798Z
+---
+
 # Brief: Native C# (.cs) Dedicated AST Parser
 
 > **Kategori**: feature  
-> **Status**: Draft  
+> **Status**: Completed  
 > **Tanggal**: 2026-09-08  
 
 ---
@@ -20,16 +30,16 @@
 
 ## Scope & Boundaries
 ### In-Scope
-- [ ] Implementasi `CSharpParser` di `src/core/parser/csharp.ts` yang mengimplementasikan `CodeParser`.
-- [ ] Dukungan ekstraksi:
+- [x] Implementasi `CSharpParser` di `src/core/parser/csharp.ts` yang mengimplementasikan `CodeParser`.
+- [x] Dukungan ekstraksi:
   - Class, Record, Struct, Interface, Enum: `[public|internal|private] [abstract|sealed|static] class/record/struct/interface/enum Name { ... }`
   - Method dengan attribute: `[Attribute] [public|private] [async] [virtual|override] ReturnType MethodName(...) { ... }` via notasi `ClassName::MethodName` atau `MethodName`.
   - Properties & Constructors.
-- [ ] Pendaftaran ekstensi `.cs` di `src/core/parser/dispatcher.ts`.
-- [ ] Ekspor parser di `src/core/parser/index.ts`.
-- [ ] Pembuatan test suite `tests/csharp-parser.test.ts`.
-- [ ] Verifikasi automated tests (`bun test`) dan audit drift (`verity check`).
-- [ ] Penyegelan provenance via `verity link`.
+- [x] Pendaftaran ekstensi `.cs` di `src/core/parser/dispatcher.ts`.
+- [x] Ekspor parser di `src/core/parser/index.ts`.
+- [x] Pembuatan test suite `tests/csharp-parser.test.ts`.
+- [x] Verifikasi automated tests (`bun test`) dan audit drift (`verity check`).
+- [x] Penyegelan provenance via `verity link`.
 
 ### Out-of-Scope
 - Evaluasi Roslyn compiler workspace dan Source Generators dinamis.
@@ -63,14 +73,15 @@
 ---
 
 ## Definition of Done (DoD) Checklist
-- [ ] `CSharpParser` terimplementasi di `src/core/parser/csharp.ts`.
-- [ ] Terdaftar di `ParserDispatcher` (`.cs`) dan diekspor di `index.ts`.
-- [ ] Test suite `tests/csharp-parser.test.ts` dibuat dan 100% lulus.
-- [ ] `verity check` berjalan bersih tanpa regresi.
-- [ ] Provenance disegel via `verity link`.
+- [x] `CSharpParser` terimplementasi di `src/core/parser/csharp.ts`.
+- [x] Terdaftar di `ParserDispatcher` (`.cs`) dan diekspor di `index.ts`.
+- [x] Test suite `tests/csharp-parser.test.ts` dibuat dan 100% lulus.
+- [x] `verity check` berjalan bersih tanpa regresi.
+- [x] Provenance disegel via `verity link`.
 
 ---
 
 ## Provenance
-- **Completion Commit**: (pending implementasi)
-- **Anchors**: (pending implementasi)
+- **Completion Commit**: `b1dc7cacb0068ad225e7814f727fae354ea902f9`
+- **Anchors**:
+  - `src/core/parser/csharp.ts`
