@@ -1,7 +1,17 @@
+---
+verity:
+  anchors:
+    - path: src/core/parser/jvm.ts
+      provenance:
+        commitSha: b1dc7cacb0068ad225e7814f727fae354ea902f9
+        fingerprint: 930d3e817cce86a5071bdc6cb671d849cc02f42e46029f4abfdb57588508bae1
+        timestamp: 2026-09-08T13:03:38.255Z
+---
+
 # Brief: Native Java (.java) & Kotlin (.kt) Dedicated AST Parser
 
 > **Kategori**: feature  
-> **Status**: Draft  
+> **Status**: Completed  
 > **Tanggal**: 2026-09-08  
 
 ---
@@ -20,17 +30,17 @@
 
 ## Scope & Boundaries
 ### In-Scope
-- [ ] Implementasi `JvmParser` di `src/core/parser/jvm.ts` yang menangani ekstensi `.java` dan `.kt`.
-- [ ] Dukungan ekstraksi Java:
+- [x] Implementasi `JvmParser` di `src/core/parser/jvm.ts` yang menangani ekstensi `.java` dan `.kt`.
+- [x] Dukungan ekstraksi Java:
   - Class, Interface, Record, Enum: `[public|protected|private] [abstract|final] class/interface/record/enum Name { ... }`
   - Method dengan anotasi: `@Annotation public ReturnType methodName(...) { ... }` via notasi `ClassName::methodName` atau `methodName`.
-- [ ] Dukungan ekstraksi Kotlin:
+- [x] Dukungan ekstraksi Kotlin:
   - Top-level function & member function: `[suspend] fun functionName(...) { ... }`
   - Class, Data Class, Sealed Class, Interface, Object: `[data|sealed] class Name { ... }`
-- [ ] Pendaftaran ekstensi `.java` dan `.kt` di `src/core/parser/dispatcher.ts`.
-- [ ] Ekspor parser di `src/core/parser/index.ts`.
-- [ ] Pembuatan test suite `tests/jvm-parser.test.ts`.
-- [ ] Verifikasi automated tests (`bun test`) dan audit drift (`verity check`).
+- [x] Pendaftaran ekstensi `.java` dan `.kt` di `src/core/parser/dispatcher.ts`.
+- [x] Ekspor parser di `src/core/parser/index.ts`.
+- [x] Pembuatan test suite `tests/jvm-parser.test.ts`.
+- [x] Verifikasi automated tests (`bun test`) dan audit drift (`verity check`).
 - [ ] Penyegelan provenance via `verity link`.
 
 ### Out-of-Scope
@@ -49,15 +59,15 @@
 ---
 
 ## Acceptance Criteria (Given-When-Then)
-- [ ] **Scenario 1: Java Class & Method Extraction**:
+- [x] **Scenario 1: Java Class & Method Extraction**:
   - **Given**: Berkas Java `OrderService.java` berisi class dan method `@Transactional public void processPayment()`.
   - **When**: Dicari dengan symbol `OrderService::processPayment` atau `processPayment`.
   - **Then**: Mengembalikan blok kode metode lengkap dengan anotasinya dan `found: true`.
-- [ ] **Scenario 2: Kotlin Top-Level & Class Method Extraction**:
+- [x] **Scenario 2: Kotlin Top-Level & Class Method Extraction**:
   - **Given**: Berkas Kotlin `UserService.kt` berisi `data class User` dan `suspend fun findUser()`.
   - **When**: Dicari dengan symbol `User` atau `findUser`.
   - **Then**: Mengembalikan blok definisi dengan benar.
-- [ ] **Scenario 3: Formatting & Javadoc/KDoc Immunity**:
+- [x] **Scenario 3: Formatting & Javadoc/KDoc Immunity**:
   - **Given**: Dua implementasi kode Java/Kotlin dengan komentar Javadoc `/** ... */` dan whitespace berbeda.
   - **When**: Keduanya di-fingerprint melalui `JvmParser`.
   - **Then**: Menghasilkan fingerprint SHA-256 yang 100% identik.
@@ -65,14 +75,15 @@
 ---
 
 ## Definition of Done (DoD) Checklist
-- [ ] `JvmParser` terimplementasi di `src/core/parser/jvm.ts`.
-- [ ] Terdaftar di `ParserDispatcher` (`.java`, `.kt`) dan diekspor di `index.ts`.
-- [ ] Test suite `tests/jvm-parser.test.ts` dibuat dan 100% lulus.
-- [ ] `verity check` berjalan bersih tanpa regresi.
-- [ ] Provenance disegel via `verity link`.
+- [x] `JvmParser` terimplementasi di `src/core/parser/jvm.ts`.
+- [x] Terdaftar di `ParserDispatcher` (`.java`, `.kt`) dan diekspor di `index.ts`.
+- [x] Test suite `tests/jvm-parser.test.ts` dibuat dan 100% lulus.
+- [x] `verity check` berjalan bersih tanpa regresi.
+- [x] Penyegelan provenance via `verity link`.
 
 ---
 
 ## Provenance
-- **Completion Commit**: (pending implementasi)
-- **Anchors**: (pending implementasi)
+- **Completion Commit**: `b1dc7cacb0068ad225e7814f727fae354ea902f9`
+- **Anchors**:
+  - `src/core/parser/jvm.ts`

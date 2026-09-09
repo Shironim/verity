@@ -36,3 +36,5 @@ export class ParserDispatcher {
 }
 import { CSharpParser } from './csharp';
     new CSharpParser(),
+import { JvmParser } from './jvm';
+    new JvmParser(),
