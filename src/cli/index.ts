@@ -13,8 +13,8 @@ function printHelp() {
 Verity — Multi-Language Spec-Drift Detector
 
 Usage:
-  verity init [--yes, -y] [--hook]
-    Inisialisasi direktori docs/brief/, manifest INDEX.md, panduan agent, dan pre-commit hook.
+  verity init [--yes, -y] [--hook] [--agent-hooks] [--skills]
+    Inisialisasi direktori docs/brief/, manifest INDEX.md, panduan agent, pre-commit hook, agent lifecycle hooks, dan agent skills (to-brief, session-handover).
 
   verity link <spec-file> <anchor1> [anchor2 ...] [--inline]
     Menautkan spec markdown ke satu atau beberapa target file/symbol kode dan menyimpan baseline provenance.
@@ -60,7 +60,9 @@ async function main() {
   if (command === 'init') {
     const isYes = args.includes('--yes') || args.includes('-y');
     const isHook = args.includes('--hook');
-    await runInitCommand({ yes: isYes, hook: isHook });
+    const isAgentHooks = args.includes('--agent-hooks');
+    const isSkills = args.includes('--skills');
+    await runInitCommand({ yes: isYes, hook: isHook, agentHooks: isAgentHooks, skills: isSkills });
     return;
   }
 

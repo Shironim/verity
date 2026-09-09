@@ -8,6 +8,8 @@ export interface InitOptions {
   yes?: boolean;
   hook?: boolean;
   template?: string;
+  agentHooks?: boolean;
+  skills?: boolean;
 }
 
 const STARTER_BRIEF = `# Brief: Example Feature Specification
@@ -61,6 +63,8 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
   docsCreated: boolean;
   hookInstalled: boolean;
   instructionsInstalled: boolean;
+  agentHooksInstalled: boolean;
+  skillsInstalled: boolean;
 }> {
   const rootDir = resolve(options.cwd || process.cwd());
   const gitClient = new GitClient(rootDir);
@@ -70,6 +74,8 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
   let docsCreated = false;
   let hookInstalled = false;
   let instructionsInstalled = false;
+  let agentHooksInstalled = false;
+  let skillsInstalled = false;
 
   // 1. Buat direktori docs/brief jika belum ada
   const briefDir = join(rootDir, 'docs/brief');
@@ -144,10 +150,72 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
     }
   }
 
+  // 6. Pasang Agent Lifecycle Hooks (.agents/hooks/) jika diminta atau flag --yes/--agent-hooks
+  const installAgentHooks = options.agentHooks || options.yes;
+  const agentHooksDir = join(rootDir, '.agents/hooks');
+  const templateHooksDir = resolve(__dirname, '../../../templates/hooks');
+
+  if (installAgentHooks && existsSync(templateHooksDir)) {
+    mkdirSync(join(agentHooksDir, 'lib'), { recursive: true });
+    const hookFiles = ['verity-pre-invocation.cjs', 'verity-mutation-guard.cjs'];
+    for (const file of hookFiles) {
+      const src = join(templateHooksDir, file);
+      const dest = join(agentHooksDir, file);
+      if (existsSync(src) && !existsSync(dest)) {
+        writeFileSync(dest, readFileSync(src, 'utf8'), 'utf8');
+      }
+    }
+    const sessionStateSrc = join(templateHooksDir, 'lib/session-state.cjs');
+    const sessionStateDest = join(agentHooksDir, 'lib/session-state.cjs');
+    if (existsSync(sessionStateSrc) && !existsSync(sessionStateDest)) {
+      writeFileSync(sessionStateDest, readFileSync(sessionStateSrc, 'utf8'), 'utf8');
+    }
+    agentHooksInstalled = true;
+    console.log('  \x1b[32m[+]\x1b[0m Agent Lifecycle Hooks terpasang di .agents/hooks/');
+  }
+
+  // 7. Pasang Agent Skills (.agents/skills/) untuk to-brief dan session-handover
+  const installSkills = options.skills || options.yes;
+  const agentSkillsDir = join(rootDir, '.agents/skills');
+  const templateSkillsDir = resolve(__dirname, '../../../templates/skills');
+
+  if (installSkills && existsSync(templateSkillsDir)) {
+    const skillsToCopy = ['to-brief', 'session-handover'];
+    for (const skillName of skillsToCopy) {
+      const skillSrcDir = join(templateSkillsDir, skillName);
+      const skillDestDir = join(agentSkillsDir, skillName);
+      if (existsSync(skillSrcDir)) {
+        mkdirSync(skillDestDir, { recursive: true });
+        const skillFileSrc = join(skillSrcDir, 'SKILL.md');
+        const skillFileDest = join(skillDestDir, 'SKILL.md');
+        if (existsSync(skillFileSrc) && !existsSync(skillFileDest)) {
+          writeFileSync(skillFileDest, readFileSync(skillFileSrc, 'utf8'), 'utf8');
+        }
+      }
+    }
+    skillsInstalled = true;
+    console.log('  \x1b[32m[+]\x1b[0m Agent Skills (to-brief, session-handover) terpasang di .agents/skills/');
+  }
+
+  // 8. Inisialisasi direktori handover/ jika belum ada
+  const handoverDir = join(rootDir, 'handover');
+  if (!existsSync(handoverDir)) {
+    mkdirSync(handoverDir, { recursive: true });
+    const handoverIndex = join(handoverDir, 'INDEX.md');
+    if (!existsSync(handoverIndex)) {
+      writeFileSync(
+        handoverIndex,
+        '# Handover Manifest Index\n\n> **Handover Records**\n\n| Tanggal | Sesi | Status | Ringkasan |\n|---|---|:---:|---|\n',
+        'utf8'
+      );
+    }
+    console.log('  \x1b[32m[+]\x1b[0m Direktori handover/ dan INDEX.md berhasil dibuat.');
+  }
+
   console.log('\n✨ [Verity] Inisialisasi selesai! Anda dapat menjalankan:');
   console.log('   - verity check        : untuk audit spec drift');
   console.log('   - verity link <spec>  : untuk menyegel brief ke kode');
   console.log('   - verity mcp          : untuk menjalankan mode AI Agent MCP Server\n');
 
-  return { docsCreated, hookInstalled, instructionsInstalled };
+  return { docsCreated, hookInstalled, instructionsInstalled, agentHooksInstalled, skillsInstalled };
 }
