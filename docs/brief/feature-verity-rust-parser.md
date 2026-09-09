@@ -5,12 +5,6 @@ verity:
       provenance:
         commitSha: 4b30074d06f8ac2d94707f051295da40c0f67396
         fingerprint: e8bf5febc2bd8364c2d87c411ef2f018a57a4913571c70b87b911629bac543ab
-        timestamp: 2026-09-08T12:13:19.722Z
-    - path: src/core/parser/dispatcher.ts
-      provenance:
-        commitSha: 4b30074d06f8ac2d94707f051295da40c0f67396
-        fingerprint: b3c1c768e6ab7267a6614a8ede8e5c67b894b54d65b61057092223c9383ce565
-        timestamp: 2026-09-08T12:13:19.727Z
 ---
 
 # Brief: Native Rust (.rs) Dedicated AST Parser
@@ -102,4 +96,3 @@ verity:
 - **Completion Commit**: `4b30074d06f8ac2d94707f051295da40c0f67396`
 - **Anchors**:
   - `src/core/parser/rust.ts`
-  - `src/core/parser/dispatcher.ts`

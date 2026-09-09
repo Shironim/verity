@@ -5,12 +5,6 @@ verity:
       provenance:
         commitSha: 4b30074d06f8ac2d94707f051295da40c0f67396
         fingerprint: e2ec1631b59fc333f725c8c0eaf0655dcb44c3b0786c778d455301f56a0481c8
-        timestamp: 2026-09-08T12:13:23.585Z
-    - path: src/core/parser/dispatcher.ts
-      provenance:
-        commitSha: 4b30074d06f8ac2d94707f051295da40c0f67396
-        fingerprint: b3c1c768e6ab7267a6614a8ede8e5c67b894b54d65b61057092223c9383ce565
-        timestamp: 2026-09-08T12:13:23.597Z
 ---
 
 # Brief: Tier-2 PHP AST Symbol Parser (`php.ts`)
@@ -86,4 +80,3 @@ verity:
 - **Completion Commit**: `4b30074d06f8ac2d94707f051295da40c0f67396`
 - **Anchors**:
   - `src/core/parser/php.ts`
-  - `src/core/parser/dispatcher.ts`
