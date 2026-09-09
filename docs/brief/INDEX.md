@@ -1,7 +1,7 @@
 # Brief Manifest Index
 
 > **Single Source of Truth (SSOT) Manifest**  
-> Terakhir Disinkronkan: 2026-09-09 04:44 UTC  
+> Terakhir Disinkronkan: 2026-09-09 05:04 UTC  
 > Dikelola otomatis oleh: `verity index` (Derived-Only Artifact — Dilarang Diedit Manual)
 
 | Brief | Kategori | Status | Anchors | Ringkasan |
