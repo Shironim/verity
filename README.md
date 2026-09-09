@@ -34,15 +34,26 @@ Verity synthesizes the strengths of three pioneering tools in the ecosystem:
 
 ---
 
-## 3. Supported Languages & AST Normalization Matrix
+## 3. Supported Languages & Architecture Tiers
 
-Verity features dedicated, zero-heavy-dependency AST scanners and token normalizers that guarantee **100% cosmetic reformatting immunity** (immune to spaces, line breaks, comments, and style formatters):
+Verity features dedicated AST scanners and token normalizers designed for **100% cosmetic reformatting immunity** (immune to whitespace, line breaks, comments, and code formatters).
+
+To establish transparent reliability expectations, language support is categorized into two operational tiers:
+
+### Tier 1 — Battle-Tested
+The primary focus of the core engine, verified through daily dogfooding and used directly to build and maintain Verity itself. Features full AST slicing and production-grade edge-case coverage.
+
+| Language / Framework | Extensions | Extraction Capabilities | Immunity Guarantee |
+|---|---|---|---|
+| **TypeScript / JavaScript** | `.ts`, `.tsx`, `.js`, `.jsx` | Functions, classes, methods, types, interfaces | Prettier, ESLint, Biome |
+| **Vue SFC** | `.vue` | `<script>`, `<template>` events, `defineProps`, `defineEmits` | Prettier, vue-format |
+| **Astro** | `.astro` | Component frontmatter scripts, template bindings | Prettier Astro plugin |
+
+### Tier 2 — Extended & Community Support (Feedback Welcome)
+Implemented via modular tokenizing scanners and verified by unit test suites. Built on Verity's pluggable `ParserDispatcher` architecture—real-world edge-case reports and community contributions are actively welcomed.
 
 | Language | Extensions | Extraction Capabilities | Immunity Guarantee |
 |---|---|---|---|
-| **TypeScript / JS** | `.ts`, `.tsx`, `.js`, `.jsx` | Functions, classes, methods, types, interfaces | Prettier, ESLint |
-| **Vue SFC** | `.vue` | `<script>`, `<template>` events, `defineProps`, `defineEmits` | Prettier, vue-format |
-| **Astro** | `.astro` | Component frontmatter scripts, template bindings | Prettier Astro plugin |
 | **Rust** | `.rs` | Functions (`pub`, `async`, `const`), structs, enums, traits, `impl Type::method` | `rustfmt` |
 | **Python** | `.py` | Indentation-aware functions, classes, decorated methods (`Class::method`) | `black`, `ruff` |
 | **Go** | `.go` | Top-level functions, structs, interfaces, methods with receiver (`Type::Method`) | `gofmt`, `goimports` |
@@ -51,7 +62,7 @@ Verity features dedicated, zero-heavy-dependency AST scanners and token normaliz
 | **Java** | `.java` | Classes, records, interfaces, enums, annotated methods (`Class::method`) | `google-java-format` |
 | **Kotlin** | `.kt` | Data classes, sealed classes, companion objects, `suspend fun` | `ktlint` |
 | **Ruby** | `.rb` | Keyword-block scanner (`def/class/module ... end`), `Class#method`, `Class::method` | `rubocop` |
-| **Any / Fallback** | `*` | Graceful normalized text hashing with whitespace compaction | General whitespace |
+| **Generic Fallback** | `*` | Graceful normalized text hashing with whitespace compaction | General whitespace |
 
 ## 4. Quick Installation
 
