@@ -5,4 +5,5 @@ dist/
 .verity/
 .agents/
 .docs/
+.codegraph/
 bin/
