@@ -34,7 +34,26 @@ Verity synthesizes the strengths of three pioneering tools in the ecosystem:
 
 ---
 
-## 3. Quick Installation
+## 3. Supported Languages & AST Normalization Matrix
+
+Verity features dedicated, zero-heavy-dependency AST scanners and token normalizers that guarantee **100% cosmetic reformatting immunity** (immune to spaces, line breaks, comments, and style formatters):
+
+| Language | Extensions | Extraction Capabilities | Immunity Guarantee |
+|---|---|---|---|
+| **TypeScript / JS** | `.ts`, `.tsx`, `.js`, `.jsx` | Functions, classes, methods, types, interfaces | Prettier, ESLint |
+| **Vue SFC** | `.vue` | `<script>`, `<template>` events, `defineProps`, `defineEmits` | Prettier, vue-format |
+| **Astro** | `.astro` | Component frontmatter scripts, template bindings | Prettier Astro plugin |
+| **Rust** | `.rs` | Functions (`pub`, `async`, `const`), structs, enums, traits, `impl Type::method` | `rustfmt` |
+| **Python** | `.py` | Indentation-aware functions, classes, decorated methods (`Class::method`) | `black`, `ruff` |
+| **Go** | `.go` | Top-level functions, structs, interfaces, methods with receiver (`Type::Method`) | `gofmt`, `goimports` |
+| **PHP** | `.php` | Classes, interfaces, traits, methods (`Class::method`), attributes | `PHP-CS-Fixer`, `Pint` |
+| **C#** | `.cs` | Classes, records (positional/nominal), structs, interfaces, expression-bodied methods | `dotnet-format` |
+| **Java** | `.java` | Classes, records, interfaces, enums, annotated methods (`Class::method`) | `google-java-format` |
+| **Kotlin** | `.kt` | Data classes, sealed classes, companion objects, `suspend fun` | `ktlint` |
+| **Ruby** | `.rb` | Keyword-block scanner (`def/class/module ... end`), `Class#method`, `Class::method` | `rubocop` |
+| **Any / Fallback** | `*` | Graceful normalized text hashing with whitespace compaction | General whitespace |
+
+## 4. Quick Installation
 
 ### Standalone Binary (Zero Dependencies)
 
@@ -57,13 +76,23 @@ bun add -g @dimassetoid/verity
 
 ---
 
-## 4. CLI Usage & Core Commands
+## 5. CLI Usage & Core Commands
 
-### 1. Initialize a Project
+### 1. Initialize an Autonomous Project Environment
 ```bash
-verity init --yes --hook
+# Full automated setup (Specs, Manifest, Handover, Git Hook, Agent Hooks, and Skills)
+verity init --yes
+
+# Or selective initialization
+verity init --hook --agent-hooks --skills
 ```
-Creates `docs/brief/`, an example brief, initializes `docs/brief/INDEX.md`, adds `AGENTS.md` instructions, and installs a Git pre-commit hook.
+Sets up the complete Autonomous Spec-Driven Engineering Lifecycle:
+- `docs/brief/` and `INDEX.md`: SSOT specification repository with starter brief.
+- `handover/` and `INDEX.md`: Session handover documentation for AI agent context continuity.
+- `AGENTS.md`: AI Agent rules, anti-patterns, and boundary ownership standards.
+- `.git/hooks/pre-commit`: Local VCS gatekeeper preventing commits when specs are STALE.
+- `.agents/hooks/`: Agent Lifecycle Hooks (`verity-pre-invocation.cjs` and `verity-mutation-guard.cjs`).
+- `.agents/skills/`: `to-brief` (boundary-safe specification creation) and `session-handover` (spec-verified context preservation).
 
 ### 2. Link a Specification to Code Anchors
 ```bash
@@ -88,7 +117,7 @@ verity check --ci
 
 ---
 
-## 5. Native MCP Server (AI Coding Agents)
+## 6. Native MCP Server (AI Coding Agents)
 
 Verity includes a native Model Context Protocol (MCP) server running over stdio JSON-RPC.
 
@@ -118,7 +147,35 @@ Add to your `claude_desktop_config.json`, Cursor MCP settings, or Antigravity co
 
 ---
 
-## 6. Architecture Overview
+## 7. Pluggable Parser Architecture (Extensibility)
+
+Verity's `ParserDispatcher` implements an open pluggable registry pattern (*Open for Extension, Closed for Modification*):
+
+```typescript
+import { ParserDispatcher, type CodeParser, type ParseResult } from '@dimassetoid/verity';
+
+class CustomSqlParser implements CodeParser {
+  readonly supportedExtensions = ['.sql'];
+
+  async parse(filePath: string, content: string, targetSymbol?: string): Promise<ParseResult> {
+    return {
+      filePath,
+      targetSymbol,
+      found: true,
+      content,
+      normalizedContent: content.trim(),
+    };
+  }
+}
+
+// Register dynamically at runtime — zero modifications to core dispatcher code!
+const dispatcher = new ParserDispatcher();
+dispatcher.registerParser(new CustomSqlParser());
+```
+
+---
+
+## 8. Architecture Overview
 
 ```
 src/
@@ -139,30 +196,47 @@ src/
 │   │   ├── scanner.ts         # Recursive markdown anchor scanner
 │   │   └── manifest.ts        # Derived-only manifest generator (INDEX.md)
 │   ├── parser/
-│   │   ├── dispatcher.ts      # Multi-tier extension dispatcher
-│   │   ├── mixed/             # SFC & mixed document extractors
-│   │   │   ├── vue.ts         # Vue SFC script/template/props/emits extractor
+│   │   ├── dispatcher.ts      # Pluggable & extensible parser registry
+│   │   ├── typescript.ts      # TypeScript / JavaScript parser
+│   │   ├── mixed/
+│   │   │   ├── vue.ts         # Vue SFC parser (script, template, props, emits)
 │   │   │   └── astro.ts       # Astro frontmatter script extractor
-│   │   ├── typescript.ts      # TypeScript/JavaScript AST symbol parser
-│   │   └── fallback.ts        # Deterministic file-level hash fallback
+│   │   ├── php.ts             # PHP balanced-braces AST parser
+│   │   ├── go.ts              # Go declaration & receiver parser
+│   │   ├── python.ts          # Python indentation-aware parser
+│   │   ├── rust.ts            # Rust balanced-braces & impl parser
+│   │   ├── csharp.ts          # C# balanced-braces & attribute parser
+│   │   ├── jvm.ts             # JVM parser (Java & Kotlin)
+│   │   ├── ruby.ts            # Ruby keyword-block scanner (def/class/module ... end)
+│   │   └── fallback.ts        # Normalized whitespace-compacting fallback
 │   ├── fingerprint/
 │   │   └── normalizer.ts      # Reformat-proof AST token normalizer
 │   └── git/
-│       └── client.ts          # Git command wrapper (SHA, logs, diffs)
+│       └── client.ts          # Git command wrapper (SHA, logs, diffs, renames)
 └── index.ts                   # Programmatic API
+templates/
+├── instructions.md            # Default AGENTS.md rules
+├── pre-commit-hook.sh         # Git pre-commit hook script
+├── hooks/                     # Verity agent lifecycle hooks
+└── skills/                    # Verity agent skills (to-brief, session-handover)
 ```
 
 ---
 
-## 7. Testing & Quality Gate
+## 9. Testing & Quality Gate
 
 ```bash
 bun test
 ```
-Runs the automated test suite across normalizer formatting immunity, Vue SFC AST extraction, CLI command execution, init command isolation, and MCP server tools.
+Runs the automated test suite (109 tests across 16 files) covering:
+- AST Token Normalizer formatting and comment immunity
+- Vue SFC, Astro, PHP, Go, Python, Rust, C#, JVM, and Ruby parser extraction
+- Pluggable `ParserDispatcher` dynamic registration and extension overriding
+- CLI command execution and idempotent workspace initialization
+- Scalability edge-cases, Git move tracking, and MCP server tools
 
 ---
 
-## 8. License
+## 10. License
 
 MIT License © 2026 Dimas Seto
