@@ -1,7 +1,7 @@
 # Brief Manifest Index
 
 > **Single Source of Truth (SSOT) Manifest**  
-> Terakhir Disinkronkan: 2026-09-09 04:16 UTC  
+> Terakhir Disinkronkan: 2026-09-09 04:20 UTC  
 > Dikelola otomatis oleh: `verity index` (Derived-Only Artifact — Dilarang Diedit Manual)
 
 | Brief | Kategori | Status | Anchors | Ringkasan |
@@ -22,4 +22,4 @@
 | [`feature-verity-sql-parser.md`](file:///docs/brief/feature-verity-sql-parser.md) | `feature` | `Draft` | 0 | 1. Mengimplementasikan `SqlParser` di `src/core/parser/sql.ts` berbasis statement scanner deterministik. |
 | [`refactor-cache-hit-sync-and-hook-activation.md`](file:///docs/brief/refactor-cache-hit-sync-and-hook-activation.md) | `refactor` | `Completed` | 1 | 1. Memperbarui `runCheckCommand` di `src/cli/commands/check.ts` agar tetap menjalankan `manifestGen.generateAndSync()` saat `options.syncIndex` bernilai true, meskipun dalam kondisi cache-hit `--quick`. |
 | [`refactor-parser-hardening-and-test-suite.md`](file:///docs/brief/refactor-parser-hardening-and-test-suite.md) | `refactor` | `Completed` | 2 | 1. Membersihkan import Vue SFC ke ESM browser build (`@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js`). |
-| [`refactor-pluggable-dispatcher-and-boundary-decoupling.md`](file:///docs/brief/refactor-pluggable-dispatcher-and-boundary-decoupling.md) | `refactor` | `Draft` | 0 | 1. **Rekonsiliasi Hutang Teknis**: Membersihkan anchor `src/core/parser/dispatcher.ts` dari 4 brief lama (`python`, `rust`, `php`, `go`), memulihkan status seluruh brief menjadi 100% valid (`OK`, 0 STALE) secara sah. |
+| [`refactor-pluggable-dispatcher-and-boundary-decoupling.md`](file:///docs/brief/refactor-pluggable-dispatcher-and-boundary-decoupling.md) | `refactor` | `Completed` | 1 | 1. **Rekonsiliasi Hutang Teknis**: Membersihkan anchor `src/core/parser/dispatcher.ts` dari 4 brief lama (`python`, `rust`, `php`, `go`), memulihkan status seluruh brief menjadi 100% valid (`OK`, 0 STALE) secara sah. |

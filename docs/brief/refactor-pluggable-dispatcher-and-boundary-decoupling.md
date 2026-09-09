@@ -1,7 +1,17 @@
+---
+verity:
+  anchors:
+    - path: src/core/parser/dispatcher.ts
+      provenance:
+        commitSha: 6dcc0150b4ab2cdebe9eae7495b46a4477631b0d
+        fingerprint: da2b62a0ad5c7ccb74f11930935139dfc1a3ac9b1d3cc15c4ab4a62d813736b5
+        timestamp: 2026-09-09T04:20:00.325Z
+---
+
 # Brief: Pluggable Parser Dispatcher & Shared-Hub Boundary Decoupling
 
 > **Kategori**: refactor  
-> **Status**: Draft  
+> **Status**: Completed  
 > **Tanggal**: 2026-09-09  
 
 ---
@@ -21,21 +31,21 @@
 
 ## Scope & Boundaries
 ### In-Scope
-- [ ] **Pembersihan Anchor Brief Bahasa Terdahulu**:
+- [x] **Pembersihan Anchor Brief Bahasa Terdahulu**:
   - Hapus anchor `src/core/parser/dispatcher.ts` dari frontmatter YAML pada:
     - [docs/brief/feature-verity-python-parser.md](file:///home/shironim/Project/verity/docs/brief/feature-verity-python-parser.md)
     - [docs/brief/feature-verity-rust-parser.md](file:///home/shironim/Project/verity/docs/brief/feature-verity-rust-parser.md)
     - [docs/brief/feature-verity-php-parser.md](file:///home/shironim/Project/verity/docs/brief/feature-verity-php-parser.md)
     - [docs/brief/feature-verity-go-parser.md](file:///home/shironim/Project/verity/docs/brief/feature-verity-go-parser.md)
   - Pertahankan hanya anchor domain parser masing-masing (`python.ts`, `rust.ts`, `php.ts`, `go.ts`).
-- [ ] **Refaktorisasi `ParserDispatcher`**:
+- [x] **Refaktorisasi `ParserDispatcher`**:
   - Refactor `src/core/parser/dispatcher.ts` agar mendukung pendaftaran modular melalui method `registerParser(parser: CodeParser): void` atau inisialisasi dinamis.
   - Memastikan method `getParserForFile` dan `parse` tetap kompatibel 100% (*zero breaking change*) untuk seluruh ekstensi yang sudah didukung.
-- [ ] **Pengujian & Validasi**:
-  - Penambahan automated test untuk fungsionalitas modular/pluggable registration di `tests/dispatcher.test.ts` atau `tests/scalability-and-edge-cases.test.ts`.
-  - Verifikasi kelulusan seluruh 15 file test suite (`bun test`).
+- [x] **Pengujian & Validasi**:
+  - Penambahan automated test untuk fungsionalitas modular/pluggable registration di `tests/dispatcher-pluggable.test.ts`.
+  - Verifikasi kelulusan seluruh 16 file test suite (`bun test`).
   - Verifikasi integritas audit Verity (`verity check`) menghasilkan 0 STALE dan 0 ERROR.
-- [ ] **Sinkronisasi Manifest & Penyegelan Provenance**:
+- [x] **Sinkronisasi Manifest & Penyegelan Provenance**:
   - Sinkronisasi manifest SSOT [docs/brief/INDEX.md](file:///home/shironim/Project/verity/docs/brief/INDEX.md).
   - Menyegel provenance brief ini ke `src/core/parser/dispatcher.ts` via `verity link`.
 
@@ -62,22 +72,22 @@
 
 ## Acceptance Criteria (Given-When-Then)
 
-- [ ] **Scenario 1: Clean Boundary & Zero Stale Debt**:
+- [x] **Scenario 1: Clean Boundary & Zero Stale Debt**:
   - **Given**: 4 brief bahasa lama (`python`, `rust`, `php`, `go`) yang sebelumnya berstatus `STALE` akibat mutasi `dispatcher.ts`.
   - **When**: Anchor `dispatcher.ts` dihapus dari dokumen-dokumen tersebut dan `verity check` dijalankan.
   - **Then**: Seluruh 4 brief tersebut kembali berstatus valid `OK` dan rekapitulasi audit melaporkan `0 STALE, 0 Error`.
 
-- [ ] **Scenario 2: Pluggable Parser Registration**:
+- [x] **Scenario 2: Pluggable Parser Registration**:
   - **Given**: Instance `ParserDispatcher` yang sudah diinisialisasi.
   - **When**: Developer mendaftarkan parser kustom baru (misal dummy `SqlParser` yang menangani `.sql`) via `dispatcher.registerParser(customParser)`.
   - **Then**: `dispatcher.getParserForFile('query.sql')` secara dinamis mengembalikan parser kustom tersebut tanpa perlu mengubah source code `dispatcher.ts`.
 
-- [ ] **Scenario 3: Zero-Bypass Pre-Commit Gate**:
+- [x] **Scenario 3: Zero-Bypass Pre-Commit Gate**:
   - **Given**: Working tree bersih setelah refaktorisasi dan rekonsiliasi.
   - **When**: Perintah `git commit` dijalankan secara normal tanpa flag `--no-verify`.
   - **Then**: Pre-commit hook menjalankan `verity check --ci` dan commit berhasil diproses dengan status exit code 0.
 
-- [ ] **Scenario 4: Complete Backward Compatibility**:
+- [x] **Scenario 4: Complete Backward Compatibility**:
   - **Given**: Proyek memiliki 104+ pengujian unit & integrasi lintas 11 ekstensi file (`.ts`, `.vue`, `.astro`, `.php`, `.go`, `.py`, `.rs`, `.cs`, `.java`, `.kt`, `.rb`).
   - **When**: Perintah `bun test` dijalankan pasca-refaktorisasi `ParserDispatcher`.
   - **Then**: 100% tes lulus tanpa kegagalan (0 fail).
@@ -85,18 +95,18 @@
 ---
 
 ## Definition of Done (DoD) Checklist
-- [ ] Anchor `src/core/parser/dispatcher.ts` dihapus dari 4 brief bahasa lama (`python`, `rust`, `php`, `go`).
-- [ ] `ParserDispatcher` di `src/core/parser/dispatcher.ts` mendukung pendaftaran modular/pluggable.
-- [ ] Test suite baru untuk pluggable registration dibuat dan lulus.
-- [ ] Seluruh 15 file test suite (`bun test`) lulus 100%.
-- [ ] `verity check` berjalan bersih (0 STALE, 0 ERROR).
-- [ ] Manifest SSOT `docs/brief/INDEX.md` tersinkronisasi.
-- [ ] Provenance brief ini disegel ke `src/core/parser/dispatcher.ts` via `verity link`.
-- [ ] Commit dilakukan secara murni tanpa flag `--no-verify`.
+- [x] Anchor `src/core/parser/dispatcher.ts` dihapus dari 4 brief bahasa lama (`python`, `rust`, `php`, `go`).
+- [x] `ParserDispatcher` di `src/core/parser/dispatcher.ts` mendukung pendaftaran modular/pluggable.
+- [x] Test suite baru untuk pluggable registration dibuat dan lulus.
+- [x] Seluruh 16 file test suite (`bun test`) lulus 100%.
+- [x] `verity check` berjalan bersih (0 STALE, 0 ERROR).
+- [x] Manifest SSOT `docs/brief/INDEX.md` tersinkronisasi.
+- [x] Provenance brief ini disegel ke `src/core/parser/dispatcher.ts` via `verity link`.
+- [x] Commit dilakukan secara murni tanpa flag `--no-verify`.
 
 ---
 
 ## Provenance
-- **Completion Commit**: (pending implementasi)
+- **Completion Commit**: `6dcc0150b4ab2cdebe9eae7495b46a4477631b0d`
 - **Anchors**:
   - `src/core/parser/dispatcher.ts`

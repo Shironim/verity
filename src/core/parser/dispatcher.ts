@@ -14,7 +14,7 @@ import { RubyParser } from './ruby';
 import { FallbackParser } from './fallback';
 
 export class ParserDispatcher {
-  private readonly parsers: CodeParser[] = [
+  private static readonly defaultParsers: CodeParser[] = [
     new VueSfcParser(),
     new AstroParser(),
     new TypeScriptParser(),
@@ -27,7 +27,35 @@ export class ParserDispatcher {
     new RubyParser(),
   ];
 
+  private readonly parsers: CodeParser[];
   private readonly fallbackParser = new FallbackParser();
+
+  constructor(initialParsers?: CodeParser[]) {
+    this.parsers = initialParsers ? [...initialParsers] : [...ParserDispatcher.defaultParsers];
+  }
+
+  /**
+   * Registers a new custom or external parser dynamically into the dispatcher instance.
+   * Prepends the parser so custom registrations can take precedence.
+   */
+  registerParser(parser: CodeParser): this {
+    this.parsers.unshift(parser);
+    return this;
+  }
+
+  /**
+   * Registers a parser globally across all new ParserDispatcher instances.
+   */
+  static registerGlobalParser(parser: CodeParser): void {
+    ParserDispatcher.defaultParsers.unshift(parser);
+  }
+
+  /**
+   * Returns a read-only list of currently registered parsers.
+   */
+  getRegisteredParsers(): readonly CodeParser[] {
+    return this.parsers;
+  }
 
   getParserForFile(filePath: string): CodeParser {
     const ext = extname(filePath).toLowerCase();
@@ -40,3 +68,4 @@ export class ParserDispatcher {
     return await parser.parse(filePath, content, targetSymbol);
   }
 }
+
