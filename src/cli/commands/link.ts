@@ -4,6 +4,8 @@ import { GitClient } from '../../core/git/client';
 import { ParserDispatcher } from '../../core/parser/dispatcher';
 import { FrontmatterAnchorHandler } from '../../core/anchor/frontmatter';
 import { InlineAnchorHandler } from '../../core/anchor/inline';
+import { AnchorScanner } from '../../core/anchor/scanner';
+import type { Anchor } from '../../core/types';
 
 export interface LinkOptions {
   inline?: boolean;
@@ -72,7 +74,7 @@ export async function runLinkCommand(
         const scanner = new AnchorScanner(rootDir);
         const existingAnchors = scanner.scan();
         const references = existingAnchors.filter(
-          (a) => a.targetPath.replace(/\\/g, '/') === relativeTargetPath
+          (a: Anchor) => a.targetPath.replace(/\\/g, '/') === relativeTargetPath
         );
         if (references.length >= 3) {
           console.warn(

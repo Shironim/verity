@@ -5,6 +5,7 @@
  * symbol-level AST parsing without interference from HTML/template syntax.
  */
 
+// @ts-ignore
 import { parse } from '@vue/compiler-sfc/dist/compiler-sfc.esm-browser.js';
 import type { CodeParser } from '../types';
 import type { ParseResult, SymbolNode } from '../../types';

@@ -47,4 +47,15 @@ export class InlineAnchorHandler {
 
     return `<!-- @verity path="${anchor.targetPath}"${symbolAttr} sha="${anchor.provenance.commitSha}" fp="${anchor.provenance.fingerprint}"${tsAttr} -->`;
   }
+
+  /**
+   * Menambahkan komentar inline anchor ke akhir konten teks.
+   */
+  static appendInlineTag(
+    content: string,
+    anchor: Omit<Anchor, 'kind' | 'specFile' | 'line'>
+  ): string {
+    const tag = this.formatInlineTag(anchor);
+    return content.trimEnd() + '\n\n' + tag + '\n';
+  }
 }

@@ -12,6 +12,7 @@ export interface CheckOptions {
   ci?: boolean;
   quick?: boolean;
   syncIndex?: boolean;
+  forceFresh?: boolean;
 }
 
 interface QuickCacheData {
