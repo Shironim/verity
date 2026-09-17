@@ -3,19 +3,19 @@ verity:
   anchors:
     - path: src/mcp/server.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
         fingerprint: 0098e903599dc155bacdebe30cb3e3f4c0f4a5e14bf8c23b39c825ea87205828
-        timestamp: 2026-09-08T10:30:52.890Z
+        timestamp: 2026-09-17T17:27:35.684Z
     - path: src/mcp/tools.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
-        fingerprint: 65c678ec38c330a1d28442e1be3c78c528d3043e6a8d4bb4fbaba6036d223eec
-        timestamp: 2026-09-08T10:30:52.901Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 385f413283547a6bfb8d83f0147817b18f442737aa0e97fa4b03ddc36f18b080
+        timestamp: 2026-09-17T17:27:35.704Z
     - path: src/cli/commands/mcp.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
         fingerprint: a3e38d9582504cc7649b51fb24582a8ec644a3f6a4b903ebd012fcd0ac8ea35e
-        timestamp: 2026-09-08T10:30:52.910Z
+        timestamp: 2026-09-17T17:27:35.728Z
 ---
 
 # Brief: Native Model Context Protocol (MCP) Server Layer
@@ -96,7 +96,7 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `af1af9c49c877674d236f57288616999f93312fc`
+- **Completion Commit**: `ac5b2c5c98fc8e1415df60e50fe4db95492b39e8`
 - **Anchors**:
   - `src/mcp/server.ts`
   - `src/mcp/tools.ts`

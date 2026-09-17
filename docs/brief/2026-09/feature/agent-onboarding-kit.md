@@ -3,14 +3,14 @@ verity:
   anchors:
     - path: src/cli/commands/init.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
-        fingerprint: 009c86f69f978a2903e810ddc5b45e1747dede6937ffeb078afca7f6e4a4569f
-        timestamp: 2026-09-08T10:32:32.362Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: b137658f5773c738870afbb1d8609dd7e7f0289a8813a7c413cbaeabd95b9ae9
+        timestamp: 2026-09-17T17:43:49.925Z
     - path: templates/instructions.md
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
-        fingerprint: afb31055d39fa42fe92b2c385dca28681beb21545c4f60046605eec1ef246f15
-        timestamp: 2026-09-08T10:32:32.365Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 0e7f6d71b7397fc38cbdbdf7b82b27d8b950a1e7202e6d0691cace5cd7af7343
+        timestamp: 2026-09-17T17:43:49.949Z
 ---
 
 # Brief: Verity Agent Onboarding Kit & Project Initializer (`verity init`)
@@ -85,7 +85,7 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `af1af9c49c877674d236f57288616999f93312fc`
+- **Completion Commit**: `ac5b2c5c98fc8e1415df60e50fe4db95492b39e8`
 - **Anchors**:
   - `src/cli/commands/init.ts`
   - `templates/instructions.md`

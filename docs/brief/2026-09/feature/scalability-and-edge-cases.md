@@ -3,24 +3,24 @@ verity:
   anchors:
     - path: src/core/git/client.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
         fingerprint: aa8edd1c90e62dc95c76d59791b053f63c4c843f1c0400ac2a8b82fdc6215807
-        timestamp: 2026-09-08T12:06:53.109Z
+        timestamp: 2026-09-17T16:36:33.929Z
     - path: src/core/anchor/scanner.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: f9b21243f001a5c70ea7c0878c0e6a00660e3b82ac595070f822b1f6aa75f084
-        timestamp: 2026-09-08T12:06:53.123Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: d5ba5a668355215e00c017f80fca326c0f44cb5a7b04d1f6f343f5c1dc064c5d
+        timestamp: 2026-09-17T16:36:33.944Z
     - path: src/cli/commands/check.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: bb775b5cfa4b3349efd8a6a8c43509d6418355fbdebd63445ec499c35fb37660
-        timestamp: 2026-09-08T12:06:53.128Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 1666bd29e6f3c74052de02705b509b4a71b16da91f8a77441e3060ed0ed6bc15
+        timestamp: 2026-09-17T16:36:33.956Z
     - path: src/cli/commands/link.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: b3b2aca3881a383954da5195e9cdd80362d80bec09a1d633e66b242d7c592958
-        timestamp: 2026-09-08T12:06:53.131Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 7a8717a92c0e9c693cb11c2f877f97d2721c169fe9c87df5629a922af33d96f7
+        timestamp: 2026-09-17T16:36:33.978Z
 ---
 
 # Brief: Verity Scalability & Enterprise Edge-Case Hardening
@@ -107,7 +107,7 @@ verity:
 ---
  
 ## Provenance
-- **Completion Commit**: `730a5e789f7cad1250583ad4be363366c02dfdae`
+- **Completion Commit**: `ac5b2c5c98fc8e1415df60e50fe4db95492b39e8`
 - **Anchors**:
   - `src/core/git/client.ts`
   - `src/core/anchor/scanner.ts`

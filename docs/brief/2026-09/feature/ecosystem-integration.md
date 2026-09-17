@@ -3,30 +3,30 @@ verity:
   anchors:
     - path: src/cli/commands/link.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: b3b2aca3881a383954da5195e9cdd80362d80bec09a1d633e66b242d7c592958
-        timestamp: 2026-09-08T12:05:40.005Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 7a8717a92c0e9c693cb11c2f877f97d2721c169fe9c87df5629a922af33d96f7
+        timestamp: 2026-09-17T17:27:36.271Z
     - path: src/cli/commands/check.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: bb775b5cfa4b3349efd8a6a8c43509d6418355fbdebd63445ec499c35fb37660
-        timestamp: 2026-09-08T12:05:40.022Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 1666bd29e6f3c74052de02705b509b4a71b16da91f8a77441e3060ed0ed6bc15
+        timestamp: 2026-09-17T17:27:36.296Z
     - path: src/core/anchor/manifest.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: 753204c8e1d3c3c5d70c8562acc219eee0b0f17ea808bceddfc605572c8429d0
-        timestamp: 2026-09-08T12:05:40.028Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: f24aa1a03be70ae7325159269197de3622a6209ef5559add9b176c16ee27b594
+        timestamp: 2026-09-17T17:27:36.314Z
     - path: src/cli/index.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: b022b01b0ddf80f057559b39ca1bbd61a01eacce176d21ee4e89e5000b17a463
-        timestamp: 2026-09-08T12:05:40.031Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 4837002446e3c2dcddab54c31ee3c1ca674b3268fd50dd6386b02335a1a04d34
+        timestamp: 2026-09-17T17:27:36.331Z
 ---
 
 # Brief: Verity Ecosystem Integration (Multi-Anchor, Derived Manifest, Quick Check)
 
 > **Kategori**: feature  
-> **Status**: Draft  
+> **Status**: Completed  
 > **Tanggal**: 2026-09-08  
 
 ---
@@ -48,12 +48,12 @@ verity:
 ## Scope & Boundaries
 
 ### In-Scope
-- [ ] Upgrade `src/cli/commands/link.ts` untuk menerima multiple code anchors: `verity link <spec-file> <anchor1> [anchor2...] [--inline]`.
-- [ ] Otomasi penyuntikan/pembaruan section `## Provenance` di dalam badan markdown brief saat `verity link` dieksekusi.
-- [ ] Pembuatan modul `src/core/anchor/manifest.ts` untuk menghasilkan dan memperbarui `docs/brief/INDEX.md` secara deterministik.
-- [ ] Penambahan opsi `--quick` pada `verity check` yang memanfaatkan Git HEAD cache untuk eksekusi kilat pada hook Antigravity.
-- [ ] Penambahan subcommand `verity index` dan flag `verity check --sync-index`.
-- [ ] Pengujian unit test untuk multi-anchor, manifest generator, dan quick-check cache.
+- [x] Upgrade `src/cli/commands/link.ts` untuk menerima multiple code anchors: `verity link <spec-file> <anchor1> [anchor2...] [--inline]`.
+- [x] Otomasi penyuntikan/pembaruan section `## Provenance` di dalam badan markdown brief saat `verity link` dieksekusi.
+- [x] Pembuatan modul `src/core/anchor/manifest.ts` untuk menghasilkan dan memperbarui `docs/brief/INDEX.md` secara deterministik.
+- [x] Penambahan opsi `--quick` pada `verity check` yang memanfaatkan Git HEAD cache untuk eksekusi kilat pada hook Antigravity.
+- [x] Penambahan subcommand `verity index` dan flag `verity check --sync-index`.
+- [x] Pengujian unit test untuk multi-anchor, manifest generator, dan quick-check cache.
 
 ### Out-of-Scope
 - Belum memodifikasi file skill `.agents/skills/to-brief/SKILL.md` dan `session-handover/SKILL.md` (dilakukan pada Fase 2 setelah CLI teruji).
@@ -98,17 +98,17 @@ verity:
 
 ## Acceptance Criteria (Given-When-Then)
 
-- [ ] **Scenario 1: Multi-Anchor Linking dalam Satu Perintah**
+- [x] **Scenario 1: Multi-Anchor Linking dalam Satu Perintah**
   - **Given**: File brief `docs/brief/test.md` dan dua file kode `src/a.ts#foo` serta `src/b.ts#bar`.
   - **When**: Pengguna/agent menjalankan `bun run verity link docs/brief/test.md src/a.ts#foo src/b.ts#bar`.
   - **Then**: Kedua anchor tersimpan di frontmatter `verity.anchors`, dan badan markdown memiliki section `## Provenance` berisi commit SHA dan daftar kedua anchor tersebut.
 
-- [ ] **Scenario 2: Quick Check dengan Cache Hit**
+- [x] **Scenario 2: Quick Check dengan Cache Hit**
   - **Given**: Seluruh anchor berstatus `OK` dan cache tersimpan pada commit HEAD saat ini.
   - **When**: `bun run verity check --quick` dijalankan tanpa ada perubahan commit atau working tree git.
   - **Then**: Perintah selesai dalam waktu $< 15\text{ms}$ dan melaporkan `[CACHE HIT] All anchors valid`.
 
-- [ ] **Scenario 3: Otomasi Sinkronisasi Manifest `docs/brief/INDEX.md`**
+- [x] **Scenario 3: Otomasi Sinkronisasi Manifest `docs/brief/INDEX.md`**
   - **Given**: Terdapat file brief di `docs/brief/*.md` dengan berbagai status anchor.
   - **When**: Pengguna/agent menjalankan `bun run verity index` atau `bun run verity check --sync-index`.
   - **Then**: Berkas `docs/brief/INDEX.md` tercipta/terperbarui berisi tabel manifest lengkap dengan kolom Status yang akurat (`OK` / `Needs Reconciliation`).
@@ -117,16 +117,16 @@ verity:
 
 ## Definition of Done (DoD) Checklist
 
-- [ ] `verity link` mendukung multi-anchor dan auto-update section `## Provenance`.
-- [ ] `verity check --quick` berhasil mengecek cache dalam hitungan milidetik untuk hook Antigravity.
-- [ ] `verity index` menghasilkan tabel manifest terstruktur di `docs/brief/INDEX.md`.
-- [ ] Unit tests di `test/ecosystem.test.ts` lulus 100%.
-- [ ] Seluruh perubahan terverifikasi tanpa regresi pada parser eksisting.
+- [x] `verity link` mendukung multi-anchor dan auto-update section `## Provenance`.
+- [x] `verity check --quick` berhasil mengecek cache dalam hitungan milidetik untuk hook Antigravity.
+- [x] `verity index` menghasilkan tabel manifest terstruktur di `docs/brief/INDEX.md`.
+- [x] Unit tests di `test/ecosystem.test.ts` lulus 100%.
+- [x] Seluruh perubahan terverifikasi tanpa regresi pada parser eksisting.
 
 ---
 
 ## Provenance
-- **Completion Commit**: `730a5e789f7cad1250583ad4be363366c02dfdae`
+- **Completion Commit**: `ac5b2c5c98fc8e1415df60e50fe4db95492b39e8`
 - **Anchors**:
   - `src/cli/commands/link.ts`
   - `src/cli/commands/check.ts`

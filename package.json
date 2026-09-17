@@ -1,6 +1,6 @@
 {
   "name": "@dimassetoid/verity",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Multi-language spec-drift detector based on git provenance and normalized AST fingerprinting",
   "main": "dist/index.js",
   "types": "src/index.ts",
@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "start": "bun run src/cli/index.ts",
-    "build": "bun build ./src/cli/index.ts --target bun --outfile ./dist/verity.js --external @vue/compiler-sfc --external @modelcontextprotocol/sdk && bun build ./src/index.ts --target bun --outfile ./dist/index.js --external @vue/compiler-sfc --external @modelcontextprotocol/sdk",
+    "build": "bun build ./src/cli/index.ts --target node --outfile ./dist/verity.js --external @vue/compiler-sfc --external @modelcontextprotocol/sdk && bun build ./src/index.ts --target node --outfile ./dist/index.js --external @vue/compiler-sfc --external @modelcontextprotocol/sdk",
     "test": "bun test",
     "typecheck": "tsc --noEmit",
     "prepublishOnly": "bun run build && bun test",

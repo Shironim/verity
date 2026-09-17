@@ -3,9 +3,9 @@ verity:
   anchors:
     - path: src/cli/commands/check.ts
       provenance:
-        commitSha: 730a5e789f7cad1250583ad4be363366c02dfdae
-        fingerprint: bb775b5cfa4b3349efd8a6a8c43509d6418355fbdebd63445ec499c35fb37660
-        timestamp: 2026-09-08T12:05:44.901Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 1666bd29e6f3c74052de02705b509b4a71b16da91f8a77441e3060ed0ed6bc15
+        timestamp: 2026-09-17T16:36:34.621Z
 ---
 
 # Brief: Cache-Hit Manifest Sync & Local Pre-Commit Hook Activation
@@ -72,6 +72,6 @@ verity:
 ---
 
 ## Provenance
-- **Completion Commit**: `730a5e789f7cad1250583ad4be363366c02dfdae`
+- **Completion Commit**: `ac5b2c5c98fc8e1415df60e50fe4db95492b39e8`
 - **Anchors**:
   - `src/cli/commands/check.ts`

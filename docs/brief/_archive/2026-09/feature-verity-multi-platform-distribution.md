@@ -5,6 +5,10 @@ verity:
       provenance:
         commitSha: af1af9c49c877674d236f57288616999f93312fc
         fingerprint: 3b919a4033a256e9a3522f4c4797d23a57bc2ca0c06aeccc36017a740a4bf8cd
+    - path: README.md
+      provenance:
+        commitSha: af1af9c49c877674d236f57288616999f93312fc
+        fingerprint: 9211c891dad264cbbb57e931a8d0271e86ad2d0eb2974a8df647def612b2c652
         timestamp: 2026-09-08T10:38:29.920Z
     - path: scripts/install.sh
       provenance:
@@ -16,18 +20,13 @@ verity:
         commitSha: af1af9c49c877674d236f57288616999f93312fc
         fingerprint: b7d1309ab3d990b9b451928dca4a488e6e9d4728f86df532f4d0fff88e8340a8
         timestamp: 2026-09-08T10:38:29.942Z
-    - path: README.md
-      provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
-        fingerprint: 9211c891dad264cbbb57e931a8d0271e86ad2d0eb2974a8df647def612b2c652
-        timestamp: 2026-09-08T10:38:29.945Z
 ---
 
 # Brief: Multi-Platform Standalone Compilation & Open-Source Distribution
 
 > **Kategori**: feature  
-> **Status**: Completed  
-> **Tanggal**: 2026-09-08  
+> **Status**: Superseded (Digantikan oleh `docs/brief/refactor-registry-distribution.md`)  
+> **Tanggal**: 2026-09-08 (Superseded: 2026-09-17)  
 
 ---
 

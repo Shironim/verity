@@ -3,15 +3,15 @@ verity:
   anchors:
     - path: src/cli/index.ts
       provenance:
-        commitSha: af1af9c49c877674d236f57288616999f93312fc
-        fingerprint: b022b01b0ddf80f057559b39ca1bbd61a01eacce176d21ee4e89e5000b17a463
-        timestamp: 2026-09-08T10:32:46.929Z
+        commitSha: ac5b2c5c98fc8e1415df60e50fe4db95492b39e8
+        fingerprint: 4837002446e3c2dcddab54c31ee3c1ca674b3268fd50dd6386b02335a1a04d34
+        timestamp: 2026-09-17T17:27:36.010Z
 ---
 
 # Brief: Verity — Multi-Language Spec-Drift Detector
 
 > **Kategori**: feature  
-> **Status**: Draft  
+> **Status**: Completed  
 > **Tanggal**: 2026-09-08  
 
 ---
@@ -28,15 +28,15 @@ verity:
 ## Scope & Boundaries
 
 ### In-Scope
-- [ ] Inisialisasi arsitektur project Bun + TypeScript (`package.json`, `tsconfig.json`).
-- [ ] Anchor Engine: Penyimpanan dan parsing metadata anchor ganda (YAML frontmatter & inline comments `<!-- @verity ... -->`).
-- [ ] Multi-Tier Code Parser Engine:
+- [x] Inisialisasi arsitektur project Bun + TypeScript (`package.json`, `tsconfig.json`).
+- [x] Anchor Engine: Penyimpanan dan parsing metadata anchor ganda (YAML frontmatter & inline comments `<!-- @verity ... -->`).
+- [x] Multi-Tier Code Parser Engine:
   - Adapter Vue SFC (`.vue`) & Astro (`.astro`) porting dari `strata-mcp` (menggunakan `@vue/compiler-sfc`).
   - TypeScript/JavaScript Symbol Extractor menggunakan AST TypeScript compiler API.
   - File-level hash fallback (SHA-256 terstandarisasi).
-- [ ] Normalized AST Fingerprinting: Normalisasi token AST (menghilangkan whitespace, trivia, formatting) untuk mencegah false-positive saat ada linting/formatting (Prettier/Pint).
-- [ ] Git Provenance Client: Ekstraksi HEAD commit SHA, deteksi diff riwayat git, dan pengambilan metadata rekonsiliasi (author, commit SHA, pesan commit, timestamp).
-- [ ] CLI Commands:
+- [x] Normalized AST Fingerprinting: Normalisasi token AST (menghilangkan whitespace, trivia, formatting) untuk mencegah false-positive saat ada linting/formatting (Prettier/Pint).
+- [x] Git Provenance Client: Ekstraksi HEAD commit SHA, deteksi diff riwayat git, dan pengambilan metadata rekonsiliasi (author, commit SHA, pesan commit, timestamp).
+- [x] CLI Commands:
   - `verity link <spec-file> <code-anchor>`: Mengikat spec ke file/simbol kode dan menyimpan baseline provenance.
   - `verity check`: Memindai anchor, memverifikasi staleness, melaporkan status (`OK` vs `STALE`) dengan detail rekonsiliasi, dan exit code 1 jika ada yang stale (CI gate-ready).
 
@@ -98,22 +98,22 @@ Karena codebase adalah greenfield, seluruh file di atas adalah berkas baru (`:L1
 
 ## Acceptance Criteria (Given-When-Then)
 
-- [ ] **Scenario 1: Menautkan Spec ke Simbol Kode (`verity link`)**
+- [x] **Scenario 1: Menautkan Spec ke Simbol Kode (`verity link`)**
   - **Given**: File spec markdown `docs/brief/auth.md` dan file kode `src/auth.ts` yang memiliki fungsi `login()`.
   - **When**: Pengguna menjalankan `bun run verity link docs/brief/auth.md src/auth.ts#login`.
   - **Then**: Metadata anchor tersimpan di `docs/brief/auth.md` berisi target path, symbol `login`, commit SHA saat ini, dan normalized fingerprint.
 
-- [ ] **Scenario 2: Pengecekan Reformat Kode Tidak Menimbulkan False-Positive (`verity check`)**
+- [x] **Scenario 2: Pengecekan Reformat Kode Tidak Menimbulkan False-Positive (`verity check`)**
   - **Given**: File `src/auth.ts#login` diformat ulang (perubahan spasi, baris baru, titik koma) tanpa mengubah struktur token AST.
   - **When**: Pengguna menjalankan `bun run verity check`.
   - **Then**: Status dilaporkan `OK` (exit code 0) dan tidak dianggap stale.
 
-- [ ] **Scenario 3: Deteksi Perubahan Kode yang Sebenarnya (`verity check` STALE)**
+- [x] **Scenario 3: Deteksi Perubahan Kode yang Sebenarnya (`verity check` STALE)**
   - **Given**: Logika di dalam `src/auth.ts#login` diubah dan di-commit ke git.
   - **When**: Pengguna menjalankan `bun run verity check`.
   - **Then**: Status dilaporkan `STALE` (exit code 1), menyertakan nama author yang mengubah, commit SHA, dan pesan commit rekonsiliasi.
 
-- [ ] **Scenario 4: Ekstraksi Simbol pada Vue SFC (`.vue`)**
+- [x] **Scenario 4: Ekstraksi Simbol pada Vue SFC (`.vue`)**
   - **Given**: Komponen Vue `Login.vue` dengan method/fungsi di dalam `<script setup>` atau `<script>`.
   - **When**: Anchor mengarah ke `Login.vue#submitForm`.
   - **Then**: Verity berhasil mengekstrak blok script melalui parser `strata-mcp` dan menghitung fingerprint simbol tanpa terganggu elemen template HTML.
@@ -122,15 +122,15 @@ Karena codebase adalah greenfield, seluruh file di atas adalah berkas baru (`:L1
 
 ## Definition of Done (DoD) Checklist
 
-- [ ] `package.json` dan `tsconfig.json` terkonfigurasi untuk Bun & TypeScript.
-- [ ] Modul parser mendukung TypeScript, JavaScript, Vue SFC (`.vue`), Astro (`.astro`), dan fallback file-level.
-- [ ] Fingerprinter menghasilkan hash identik untuk kode sebelum dan sesudah formatting Prettier/Pint.
-- [ ] Perintah `verity link` dan `verity check` berfungsi penuh dengan penanganan error yang jelas.
-- [ ] Seluruh skenario Acceptance Criteria teruji dan berhasil lulus.
+- [x] `package.json` dan `tsconfig.json` terkonfigurasi untuk Bun & TypeScript.
+- [x] Modul parser mendukung TypeScript, JavaScript, Vue SFC (`.vue`), Astro (`.astro`), dan fallback file-level.
+- [x] Fingerprinter menghasilkan hash identik untuk kode sebelum dan sesudah formatting Prettier/Pint.
+- [x] Perintah `verity link` dan `verity check` berfungsi penuh dengan penanganan error yang jelas.
+- [x] Seluruh skenario Acceptance Criteria teruji dan berhasil lulus.
 
 ---
 
 ## Provenance
-- **Completion Commit**: `af1af9c49c877674d236f57288616999f93312fc`
+- **Completion Commit**: `ac5b2c5c98fc8e1415df60e50fe4db95492b39e8`
 - **Anchors**:
   - `src/cli/index.ts`
