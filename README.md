@@ -66,23 +66,18 @@ Implemented via modular tokenizing scanners and verified by unit test suites. Bu
 
 ## 4. Quick Installation
 
-### Standalone Binary (Zero Dependencies)
+### Global Package Manager
 
-**Linux & macOS (1-Line Install):**
 ```bash
-curl -fsSL https://raw.githubusercontent.com/shironim/verity/master/scripts/install.sh | bash
-```
-
-**Windows (PowerShell):**
-```powershell
-irm https://raw.githubusercontent.com/shironim/verity/master/scripts/install.ps1 | iex
-```
-
-### Via NPM / Bun Global
-```bash
-npm install -g @dimassetoid/verity
-# or
+# Install globally via Bun
 bun add -g @dimassetoid/verity
+
+# Or install globally via NPM
+npm install -g @dimassetoid/verity
+
+# Or run on-demand without installation
+npx @dimassetoid/verity init --yes
+bunx @dimassetoid/verity init --yes
 ```
 
 ---
@@ -103,11 +98,13 @@ Sets up the complete Autonomous Spec-Driven Engineering Lifecycle:
 - `AGENTS.md`: AI Agent rules, anti-patterns, and boundary ownership standards.
 - `.git/hooks/pre-commit`: Local VCS gatekeeper preventing commits when specs are STALE.
 - `.agents/hooks/`: Agent Lifecycle Hooks (`verity-pre-invocation.cjs` and `verity-mutation-guard.cjs`).
+- `.agents/hooks.json`: Automated configuration manifest with Smart Merging for AI agent runners.
 - `.agents/skills/`: `to-brief` (boundary-safe specification creation) and `session-handover` (spec-verified context preservation).
+- `.gitignore`: Automatically appends `.agents/` and `.verity/` to prevent noise in git status.
 
 ### 2. Link a Specification to Code Anchors
 ```bash
-verity link docs/brief/feature-auth.md src/auth.ts#login src/components/Login.vue#submitForm
+verity link docs/brief/2026-09/feature/auth.md src/auth.ts#login src/components/Login.vue#submitForm
 ```
 Calculates AST fingerprints and seals the current Git HEAD commit SHA into the markdown frontmatter (or inline tag with `--inline`).
 
@@ -126,11 +123,33 @@ verity check --sync-index
 verity check --ci
 ```
 
+### 4. Search & Retrieve Accumulated Briefs
+```bash
+# Full-text fuzzy search across all monthly and category folders
+verity find "jwt authentication"
+
+# Reverse code target lookup: find all active briefs governing a file
+verity find --target src/auth/token.ts
+
+# Filter by category, status, or monthly period
+verity find --category feature --status "In Progress" --month 2026-09
+```
+
+### 5. Repository Health Status & Semantic Diff
+```bash
+# Snapshot overview of git state, active briefs, and anchor metrics
+verity status
+
+# Inspect semantic AST diff and git reconciliation diff against baseline
+verity diff src/auth/token.ts
+verity diff docs/brief/2026-09/feature/auth.md
+```
+
 ---
 
 ## 6. Native MCP Server (AI Coding Agents)
 
-Verity includes a native Model Context Protocol (MCP) server running over stdio JSON-RPC.
+Verity includes a native Model Context Protocol (MCP) server running over stdio JSON-RPC with 100% full parity with the CLI interface.
 
 ### Adding to Agent Configuration (`mcpServers`)
 
@@ -148,13 +167,15 @@ Add to your `claude_desktop_config.json`, Cursor MCP settings, or Antigravity co
 ```
 *(Or run directly with `bun run /path/to/verity/src/cli/index.ts mcp`)*.
 
-### Exposed MCP Tools
+### Exposed MCP Tools (Full Parity)
 
 1. **`verity_check`**: Runs deterministic drift audit; returns structured JSON with OK/STALE statuses.
-2. **`verity_link`**: Links and seals brief documents to target files/symbols with Git HEAD SHA.
-3. **`verity_status`**: High-level repository health summary (total briefs, anchors, git state).
-4. **`verity_reconcile_diff`**: Retrieves the precise Git diff of code modifications since baseline commit SHA.
-5. **`verity_sync_manifest`**: Deterministically synchronizes `docs/brief/INDEX.md`.
+2. **`verity_link`**: Links and seals brief documents to target files/symbols with Git HEAD SHA and AST fingerprints.
+3. **`verity_find`**: Unified search across hierarchical briefs via keywords, code targets, categories, and monthly folders.
+4. **`verity_diff`**: Inspects semantic AST changes and Git unified diff since baseline commit SHA.
+5. **`verity_status`**: High-level repository health summary (Git HEAD, total briefs, total anchors, and spec files).
+6. **`verity_init`**: Programmatically initializes a repository with Verity scaffolding, hooks, and guidelines.
+7. **`verity_sync_manifest`**: Deterministically synchronizes `docs/brief/INDEX.md` manifest.
 
 ---
 
@@ -196,12 +217,17 @@ src/
 │       ├── link.ts            # 'verity link' implementation
 │       ├── check.ts           # 'verity check' implementation
 │       ├── init.ts            # 'verity init' onboarding wizard
+│       ├── find.ts            # 'verity find' hierarchical search engine
+│       ├── status.ts          # 'verity status' environment summary
+│       ├── diff.ts            # 'verity diff' AST & git reconciliation diff
 │       └── mcp.ts             # 'verity mcp' stdio runner
 ├── mcp/
 │   ├── server.ts              # MCP Server instance (@modelcontextprotocol/sdk)
-│   └── tools.ts               # 5 Core MCP Tool definitions & handlers
+│   └── tools.ts               # 7 Core MCP Tool definitions & handlers
 ├── core/
 │   ├── anchor/
+│   │   ├── reader.ts          # SSOT Brief document reader & metadata parser
+│   │   ├── search.ts          # Multi-criteria fuzzy search & reverse lookup engine
 │   │   ├── frontmatter.ts     # YAML frontmatter parser & serializer
 │   │   ├── inline.ts          # Inline <!-- @verity ... --> comment parser
 │   │   ├── scanner.ts         # Recursive markdown anchor scanner
@@ -228,7 +254,8 @@ src/
 templates/
 ├── instructions.md            # Default AGENTS.md rules
 ├── pre-commit-hook.sh         # Git pre-commit hook script
-├── hooks/                     # Verity agent lifecycle hooks
+├── hooks.json                 # Agent Lifecycle Hooks configuration template
+├── hooks/                     # Verity agent lifecycle hooks (pre-invocation, mutation-guard)
 └── skills/                    # Verity agent skills (to-brief, session-handover)
 ```
 
@@ -239,7 +266,7 @@ templates/
 ```bash
 bun test
 ```
-Runs the automated test suite (109 tests across 16 files) covering:
+Runs the automated test suite (112 tests across 16 files) covering:
 - AST Token Normalizer formatting and comment immunity
 - Vue SFC, Astro, PHP, Go, Python, Rust, C#, JVM, and Ruby parser extraction
 - Pluggable `ParserDispatcher` dynamic registration and extension overriding

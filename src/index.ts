@@ -5,3 +5,6 @@ export * from './core/parser';
 export * from './core/anchor';
 export * from './cli/commands/link';
 export * from './cli/commands/check';
+export * from './cli/commands/find';
+export * from './cli/commands/status';
+export * from './cli/commands/diff';

@@ -1,8 +1,11 @@
-#!/usr/bin/env bun
+#!/usr/bin/env node
 import { runLinkCommand } from './commands/link';
 import { runCheckCommand } from './commands/check';
 import { runMcpCommand } from './commands/mcp';
 import { runInitCommand } from './commands/init';
+import { runFindCommand } from './commands/find';
+import { runStatusCommand } from './commands/status';
+import { runDiffCommand } from './commands/diff';
 import { BriefManifestGenerator } from '../core/anchor/manifest';
 
 const args = process.argv.slice(2);
@@ -29,6 +32,19 @@ Usage:
       verity check --quick         # Cache-aware check (<= 5ms untuk Antigravity Hook)
       verity check --sync-index    # Periksa dan sinkronkan docs/brief/INDEX.md
       verity check --json
+
+  verity status [--json]
+    Tampilkan ringkasan kesehatan repositori, total brief, dan anchor aktif.
+
+  verity diff <target-code-file | spec-file> [--baseline <sha>]
+    Tampilkan git diff untuk file kode target sejak baseline provenance commit.
+
+  verity find [query] [--target <file>] [--category <cat>] [--status <status>] [--month <YYYY-MM>] [--json]
+    Cari brief spesifikasi berdasarkan kata kunci, file kode anchor target, kategori, status, atau bulan.
+    Contoh:
+      verity find auth
+      verity find --target src/auth.ts
+      verity find --category bugfix --month 2026-09
 
   verity index
     Menghasilkan atau menyinkronkan manifest docs/brief/INDEX.md secara otomatis.
@@ -99,6 +115,51 @@ async function main() {
       quick: isQuick,
       syncIndex: isSyncIndex,
     });
+    return;
+  }
+
+  if (command === 'find') {
+    const isJson = args.includes('--json');
+    const getOptionValue = (flag: string) => {
+      const idx = args.indexOf(flag);
+      return idx !== -1 && idx + 1 < args.length ? args[idx + 1] : undefined;
+    };
+
+    const target = getOptionValue('--target');
+    const category = getOptionValue('--category');
+    const status = getOptionValue('--status');
+    const month = getOptionValue('--month');
+
+    // Query adalah argumen non-flag pertama setelah command 'find'
+    const nonFlags = args.slice(1).filter((a, i, arr) => {
+      if (a.startsWith('--')) return false;
+      const prev = arr[i - 1];
+      if (prev && ['--target', '--category', '--status', '--month'].includes(prev)) return false;
+      return true;
+    });
+    const query = nonFlags[0];
+
+    await runFindCommand(query, {
+      target,
+      category,
+      status,
+      month,
+      json: isJson,
+    });
+    return;
+  }
+
+  if (command === 'status') {
+    const isJson = args.includes('--json');
+    await runStatusCommand({ json: isJson });
+    return;
+  }
+
+  if (command === 'diff') {
+    const targetArg = args.slice(1).find((a) => !a.startsWith('--'));
+    const baselineIdx = args.indexOf('--baseline');
+    const baselineSha = baselineIdx !== -1 && baselineIdx + 1 < args.length ? args[baselineIdx + 1] : undefined;
+    await runDiffCommand(targetArg, { baselineSha });
     return;
   }
 

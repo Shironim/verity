@@ -6,6 +6,8 @@ import { AnchorScanner } from '../core/anchor/scanner';
 import { FrontmatterAnchorHandler } from '../core/anchor/frontmatter';
 import { InlineAnchorHandler } from '../core/anchor/inline';
 import { BriefManifestGenerator } from '../core/anchor/manifest';
+import { BriefSearchEngine } from '../core/anchor/search';
+import { runInitCommand } from '../cli/commands/init';
 import type { StalenessReport } from '../core/types';
 
 export interface McpToolDefinition {
@@ -450,6 +452,149 @@ export const VERITY_TOOLS: McpToolDefinition[] = [
         return {
           isError: true,
           content: [{ type: 'text', text: `Failed to generate index manifest: ${err.message}` }],
+        };
+      }
+    },
+  },
+  {
+    name: 'verity_find',
+    description:
+      'Search across task briefs and specifications by query text, target code anchor, category, status, or month.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        query: {
+          type: 'string',
+          description: 'Optional keyword to search across brief titles, summaries, and contents.',
+        },
+        target: {
+          type: 'string',
+          description: 'Optional file path or symbol to find briefs that anchor this code location (reverse-lookup).',
+        },
+        category: {
+          type: 'string',
+          description: 'Optional category filter (feature, bugfix, refactor, testing).',
+        },
+        status: {
+          type: 'string',
+          description: 'Optional status filter (Draft, In Progress, Completed, Needs Reconciliation).',
+        },
+        month: {
+          type: 'string',
+          description: 'Optional period filter in YYYY-MM format (e.g. 2026-09).',
+        },
+        limit: {
+          type: 'number',
+          description: 'Optional maximum number of results to return (defaults to 20).',
+        },
+      },
+    },
+    handler: async (args) => {
+      const rootDir = process.cwd();
+      const engine = new BriefSearchEngine(rootDir);
+
+      try {
+        const results = await engine.search({
+          query: args?.query,
+          target: args?.target,
+          category: args?.category,
+          status: args?.status,
+          month: args?.month,
+          limit: args?.limit || 20,
+        });
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(
+                {
+                  total: results.length,
+                  results: results.map((r) => ({
+                    filePath: r.filePath,
+                    title: r.title,
+                    category: r.category,
+                    status: r.status,
+                    date: r.date,
+                    summary: r.summary,
+                    anchors: r.anchors.map((a) => `${a.targetPath}${a.symbol ? '#' + a.symbol : ''}`),
+                    matchReasons: r.matchReasons,
+                  })),
+                },
+                null,
+                2
+              ),
+            },
+          ],
+        };
+      } catch (err: any) {
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Failed to search briefs: ${err.message}` }],
+        };
+      }
+    },
+  },
+  {
+    name: 'verity_init',
+    description:
+      'Initialize an autonomous project environment with docs/brief/, AGENTS.md guidelines, INDEX.md manifest, pre-commit hook, agent lifecycle hooks, and skills.',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        cwd: {
+          type: 'string',
+          description: 'Optional target workspace root directory (defaults to current working directory).',
+        },
+        yes: {
+          type: 'boolean',
+          description: 'Accept all defaults and install all components (hooks, skills, etc.).',
+        },
+        hook: {
+          type: 'boolean',
+          description: 'Install Git pre-commit hook.',
+        },
+        agentHooks: {
+          type: 'boolean',
+          description: 'Install Agent Lifecycle Hooks in .agents/hooks/.',
+        },
+        skills: {
+          type: 'boolean',
+          description: 'Install agent skills in .agents/skills/.',
+        },
+      },
+    },
+    handler: async (args) => {
+      const rootDir = resolve(args?.cwd || process.cwd());
+      try {
+        const result = await runInitCommand({
+          cwd: rootDir,
+          yes: args?.yes ?? true,
+          hook: args?.hook,
+          agentHooks: args?.agentHooks,
+          skills: args?.skills,
+        });
+
+        return {
+          content: [
+            {
+              type: 'text',
+              text: JSON.stringify(
+                {
+                  success: true,
+                  rootDir,
+                  result,
+                },
+                null,
+                2
+              ),
+            },
+          ],
+        };
+      } catch (err: any) {
+        return {
+          isError: true,
+          content: [{ type: 'text', text: `Failed to initialize Verity: ${err.message}` }],
         };
       }
     },

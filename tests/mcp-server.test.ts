@@ -3,8 +3,8 @@ import { createMcpServer } from '../src/mcp/server';
 import { VERITY_TOOLS, findTool } from '../src/mcp/tools';
 
 describe('Verity MCP Server & Tools', () => {
-  it('should register all 5 core MCP tools', () => {
-    expect(VERITY_TOOLS.length).toBe(5);
+  it('should register all 7 core MCP tools', () => {
+    expect(VERITY_TOOLS.length).toBe(7);
 
     const toolNames = VERITY_TOOLS.map((t) => t.name);
     expect(toolNames).toContain('verity_check');
@@ -12,6 +12,8 @@ describe('Verity MCP Server & Tools', () => {
     expect(toolNames).toContain('verity_status');
     expect(toolNames).toContain('verity_reconcile_diff');
     expect(toolNames).toContain('verity_sync_manifest');
+    expect(toolNames).toContain('verity_find');
+    expect(toolNames).toContain('verity_init');
   });
 
   it('should instantiate MCP Server without errors', () => {

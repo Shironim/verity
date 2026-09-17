@@ -127,7 +127,7 @@ export class AnchorScanner {
 
   private collectMarkdownFiles(dir: string): string[] {
     const results: string[] = [];
-    const ignored = new Set(['node_modules', '.git', '.agents', 'dist', 'build', '.idea', '.vscode']);
+    const ignored = new Set(['node_modules', '.git', '.agents', 'dist', 'build', '.idea', '.vscode', '_archive']);
 
     const traverse = (currentDir: string) => {
       try {
