@@ -62,20 +62,29 @@ Berkas `docs/brief/INDEX.md` berfungsi sebagai manifest ringan yang mencantumkan
 
 ---
 
-## CATEGORY SLUG MATRIX
+## CATEGORY SLUG MATRIX & HIERARCHY
 
-| Category | Slug Format | Primary Document Focus |
+Struktur folder brief menggunakan format hibrida waktu dan kategori: `docs/brief/YYYY-MM/[category]/[slug].md` (misal: `docs/brief/2026-09/feature/auth-login.md`).
+
+> [!TIP]
+> **Discovery Sebelum Membuat Brief:**
+> Jalankan `verity find <kata-kunci>` atau `verity find --target <file>` terlebih dahulu untuk memastikan tidak ada spesifikasi aktif yang tumpang-tindih dengan pekerjaan yang akan dirumuskan.
+
+| Category | Path Format | Primary Document Focus |
 |---|---|---|
-| `feature` | `docs/brief/feature-[slug].md` | User Stories, UI Flow, API Specs, Data Model & Access Control. |
-| `bugfix` | `docs/brief/bugfix-[slug].md` | Root Cause Log Evidence, Stack Traces, Expected vs Actual Behavior. |
-| `refactor` | `docs/brief/refactor-[slug].md` | Bottleneck Evidence, Architecture Changes, Impact Radius Check. |
-| `testing` | `docs/brief/testing-[slug].md` | Coverage Targets, Testing Pyramid Matrix (Unit, API, E2E). |
+| `feature` | `docs/brief/YYYY-MM/feature/[slug].md` | User Stories, UI Flow, API Specs, Data Model & Access Control. |
+| `bugfix` | `docs/brief/YYYY-MM/bugfix/[slug].md` | Root Cause Log Evidence, Stack Traces, Expected vs Actual Behavior. |
+| `refactor` | `docs/brief/YYYY-MM/refactor/[slug].md` | Bottleneck Evidence, Architecture Changes, Impact Radius Check. |
+| `testing` | `docs/brief/YYYY-MM/testing/[slug].md` | Coverage Targets, Testing Pyramid Matrix (Unit, API, E2E). |
 
 ---
 
-## OUTPUT DOCUMENT CONTRACT (`docs/brief/[category]-[slug].md`)
+## OUTPUT DOCUMENT CONTRACT (`docs/brief/YYYY-MM/[category]/[slug].md`)
 
-Setiap kali skill ini dipanggil, buat file baru di `docs/brief/[category]-[slug].md` menggunakan templat SSOT berikut:
+Setiap kali skill ini dipanggil:
+1. Dapatkan tahun dan bulan saat ini dalam format `YYYY-MM` (contoh: `2026-09`).
+2. Pastikan direktori `docs/brief/YYYY-MM/[category]/` telah dibuat (`mkdir -p`).
+3. Buat file baru di `docs/brief/YYYY-MM/[category]/[slug].md` menggunakan templat SSOT berikut:
 
 ```markdown
 # Brief: [Judul Pekerjaan]

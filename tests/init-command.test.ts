@@ -57,4 +57,58 @@ describe('runInitCommand', () => {
     const retainedContent = readFileSync(exampleFile, 'utf8');
     expect(retainedContent).toBe(customContent);
   });
+
+  it('should auto-append .agents/ and .verity/ to .gitignore and remain idempotent', async () => {
+    const gitignoreFile = join(tempDir, '.gitignore');
+    await Bun.write(gitignoreFile, 'node_modules/\ndist/\n');
+
+    const firstResult = await runInitCommand({ cwd: tempDir, yes: true });
+    expect(firstResult.gitignoreUpdated).toBe(true);
+
+    const content = readFileSync(gitignoreFile, 'utf8');
+    expect(content).toContain('.agents/');
+    expect(content).toContain('.verity/');
+
+    // Jalankan ulang - harus idempotent
+    const secondResult = await runInitCommand({ cwd: tempDir, yes: true });
+    expect(secondResult.gitignoreUpdated).toBe(false);
+  });
+
+  it('should auto-create and smart merge .agents/hooks.json', async () => {
+    // 1. Fresh creation
+    const result = await runInitCommand({ cwd: tempDir, agentHooks: true });
+    expect(result.agentHooksInstalled).toBe(true);
+
+    const hooksJsonPath = join(tempDir, '.agents/hooks.json');
+    expect(existsSync(hooksJsonPath)).toBe(true);
+
+    const initialConfig = JSON.parse(readFileSync(hooksJsonPath, 'utf8'));
+    expect(initialConfig['verity-pre-invocation']).toBeDefined();
+    expect(initialConfig['verity-mutation-guard']).toBeDefined();
+    expect(initialConfig['verity-pre-invocation'].PreInvocation[0].command).toContain('hooks/verity-pre-invocation.cjs');
+    expect(initialConfig['verity-mutation-guard'].PreToolUse[0].hooks[0].command).toContain('hooks/verity-mutation-guard.cjs');
+
+    // 2. Existing custom hook merge
+    initialConfig['custom-linter'] = { enabled: true };
+    await Bun.write(hooksJsonPath, JSON.stringify(initialConfig, null, 2));
+
+    await runInitCommand({ cwd: tempDir, agentHooks: true });
+    const mergedConfig = JSON.parse(readFileSync(hooksJsonPath, 'utf8'));
+    expect(mergedConfig['custom-linter']).toBeDefined();
+    expect(mergedConfig['verity-pre-invocation']).toBeDefined();
+    expect(mergedConfig['verity-mutation-guard']).toBeDefined();
+  });
+
+  it('should not be hijacked by consumer repo having a local templates/ folder', async () => {
+    // Simulasi consumer repo yang memiliki folder templates/ sendiri (misal template HTML/email)
+    const consumerTemplates = join(tempDir, 'templates');
+    mkdirSync(consumerTemplates, { recursive: true });
+    await Bun.write(join(consumerTemplates, 'user-email.html'), '<h1>Hello</h1>');
+
+    const result = await runInitCommand({ cwd: tempDir, yes: true, agentHooks: true });
+    expect(result.instructionsInstalled).toBe(true);
+    expect(existsSync(join(tempDir, 'AGENTS.md'))).toBe(true);
+    const agentsContent = readFileSync(join(tempDir, 'AGENTS.md'), 'utf8');
+    expect(agentsContent).toContain('Verity AI Agent Guidelines');
+  });
 });

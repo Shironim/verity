@@ -9,10 +9,12 @@ if command -v verity >/dev/null 2>&1; then
   CMD="verity"
 elif command -v bun >/dev/null 2>&1 && [ -f "./src/cli/index.ts" ]; then
   CMD="bun run ./src/cli/index.ts"
+elif command -v bunx >/dev/null 2>&1; then
+  CMD="bunx @dimassetoid/verity"
 elif command -v npx >/dev/null 2>&1; then
   CMD="npx @dimassetoid/verity"
 else
-  echo "⚠️  [Verity] Command verity/bun tidak ditemukan. Melewati pemeriksaan pre-commit."
+  echo "⚠️  [Verity] Command verity/bun/npx tidak ditemukan. Melewati pemeriksaan pre-commit."
   exit 0
 fi
 

@@ -65,6 +65,7 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
   instructionsInstalled: boolean;
   agentHooksInstalled: boolean;
   skillsInstalled: boolean;
+  gitignoreUpdated: boolean;
 }> {
   const rootDir = resolve(options.cwd || process.cwd());
   const gitClient = new GitClient(rootDir);
@@ -76,6 +77,7 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
   let instructionsInstalled = false;
   let agentHooksInstalled = false;
   let skillsInstalled = false;
+  let gitignoreUpdated = false;
 
   // 1. Buat direktori docs/brief jika belum ada
   const briefDir = join(rootDir, 'docs/brief');
@@ -99,9 +101,24 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
   await manifestGen.generateAndSync();
   console.log('  \x1b[32m[+]\x1b[0m Manifest docs/brief/INDEX.md disinkronkan.');
 
+  // Helper pencarian direktori templates yang adaptif (dist vs dev) dengan verifikasi integritas
+  const templatesDir = (() => {
+    const candidates = [
+      resolve(__dirname, '../templates'),       // npm bundle dist/
+      resolve(__dirname, 'templates'),          // packaging alternatif
+      resolve(__dirname, '../../../templates')  // dev: src/cli/commands -> root
+    ];
+    for (const candidate of candidates) {
+      if (existsSync(candidate) && existsSync(join(candidate, 'instructions.md'))) {
+        return candidate;
+      }
+    }
+    return resolve(__dirname, '../templates');
+  })();
+
   // 4. Salin panduan instructions.md ke AGENTS.md / instructions.md
   const instructionsTarget = join(rootDir, 'AGENTS.md');
-  const templateInstructionsPath = resolve(__dirname, '../../../templates/instructions.md');
+  const templateInstructionsPath = join(templatesDir, 'instructions.md');
 
   if (existsSync(templateInstructionsPath)) {
     const templateContent = readFileSync(templateInstructionsPath, 'utf8');
@@ -127,7 +144,7 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
 
   if (installHook && existsSync(gitHooksDir)) {
     const preCommitPath = join(gitHooksDir, 'pre-commit');
-    const templateHookPath = resolve(__dirname, '../../../templates/pre-commit-hook.sh');
+    const templateHookPath = join(templatesDir, 'pre-commit-hook.sh');
 
     if (existsSync(templateHookPath)) {
       const hookContent = readFileSync(templateHookPath, 'utf8');
@@ -153,7 +170,7 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
   // 6. Pasang Agent Lifecycle Hooks (.agents/hooks/) jika diminta atau flag --yes/--agent-hooks
   const installAgentHooks = options.agentHooks || options.yes;
   const agentHooksDir = join(rootDir, '.agents/hooks');
-  const templateHooksDir = resolve(__dirname, '../../../templates/hooks');
+  const templateHooksDir = join(templatesDir, 'hooks');
 
   if (installAgentHooks && existsSync(templateHooksDir)) {
     mkdirSync(join(agentHooksDir, 'lib'), { recursive: true });
@@ -170,6 +187,75 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
     if (existsSync(sessionStateSrc) && !existsSync(sessionStateDest)) {
       writeFileSync(sessionStateDest, readFileSync(sessionStateSrc, 'utf8'), 'utf8');
     }
+
+    // Pasang atau gabungkan konfigurasi .agents/hooks.json
+    const hooksJsonPath = join(rootDir, '.agents/hooks.json');
+    const templateHooksJson = join(templatesDir, 'hooks.json');
+    let verityConfig = {};
+
+    if (existsSync(templateHooksJson)) {
+      try {
+        verityConfig = JSON.parse(readFileSync(templateHooksJson, 'utf8'));
+      } catch (_) {}
+    }
+
+    if (Object.keys(verityConfig).length === 0) {
+      verityConfig = {
+        "verity-pre-invocation": {
+          "enabled": true,
+          "PreInvocation": [
+            {
+              "type": "command",
+              "command": "node hooks/verity-pre-invocation.cjs",
+              "timeout": 5
+            }
+          ]
+        },
+        "verity-mutation-guard": {
+          "enabled": true,
+          "PreToolUse": [
+            {
+              "matcher": "replace_file_content|write_to_file",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node hooks/verity-mutation-guard.cjs",
+                  "timeout": 5
+                }
+              ]
+            }
+          ],
+          "PostToolUse": [
+            {
+              "matcher": "replace_file_content|write_to_file",
+              "hooks": [
+                {
+                  "type": "command",
+                  "command": "node hooks/verity-mutation-guard.cjs --post",
+                  "timeout": 5
+                }
+              ]
+            }
+          ]
+        }
+      };
+    }
+
+    if (existsSync(hooksJsonPath)) {
+      try {
+        const existing = JSON.parse(readFileSync(hooksJsonPath, 'utf8'));
+        const merged = { ...existing, ...verityConfig };
+        writeFileSync(hooksJsonPath, JSON.stringify(merged, null, 2), 'utf8');
+        console.log('  \x1b[32m[+]\x1b[0m Konfigurasi Verity digabungkan ke .agents/hooks.json');
+      } catch (_) {
+        writeFileSync(hooksJsonPath, JSON.stringify(verityConfig, null, 2), 'utf8');
+        console.log('  \x1b[32m[+]\x1b[0m .agents/hooks.json berhasil dibuat.');
+      }
+    } else {
+      writeFileSync(hooksJsonPath, JSON.stringify(verityConfig, null, 2), 'utf8');
+      console.log('  \x1b[32m[+]\x1b[0m .agents/hooks.json berhasil dibuat.');
+    }
+
     agentHooksInstalled = true;
     console.log('  \x1b[32m[+]\x1b[0m Agent Lifecycle Hooks terpasang di .agents/hooks/');
   }
@@ -177,7 +263,7 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
   // 7. Pasang Agent Skills (.agents/skills/) untuk to-brief dan session-handover
   const installSkills = options.skills || options.yes;
   const agentSkillsDir = join(rootDir, '.agents/skills');
-  const templateSkillsDir = resolve(__dirname, '../../../templates/skills');
+  const templateSkillsDir = join(templatesDir, 'skills');
 
   if (installSkills && existsSync(templateSkillsDir)) {
     const skillsToCopy = ['to-brief', 'session-handover'];
@@ -212,10 +298,34 @@ export async function runInitCommand(options: InitOptions = {}): Promise<{
     console.log('  \x1b[32m[+]\x1b[0m Direktori handover/ dan INDEX.md berhasil dibuat.');
   }
 
+  // 9. Pastikan .gitignore memuat .agents/ dan .verity/
+  const gitignorePath = join(rootDir, '.gitignore');
+  const requiredIgnores = ['.agents/', '.verity/'];
+
+  if (existsSync(gitignorePath)) {
+    const content = readFileSync(gitignorePath, 'utf8');
+    const lines = content.split('\n');
+    const missing = requiredIgnores.filter(
+      rule => !lines.some(l => l.trim() === rule || l.trim() === rule.replace(/\/$/, ''))
+    );
+    if (missing.length > 0) {
+      const separator = content.endsWith('\n') || content.length === 0 ? '' : '\n';
+      writeFileSync(gitignorePath, `${content}${separator}${missing.join('\n')}\n`, 'utf8');
+      gitignoreUpdated = true;
+      console.log(`  \x1b[32m[+]\x1b[0m .gitignore diperbarui: menambahkan ${missing.join(', ')}`);
+    } else {
+      console.log('  \x1b[34m[=]\x1b[0m .gitignore sudah memuat entri Verity (.agents/ & .verity/).');
+    }
+  } else if (gitClient.isGitRepository()) {
+    writeFileSync(gitignorePath, `${requiredIgnores.join('\n')}\n`, 'utf8');
+    gitignoreUpdated = true;
+    console.log(`  \x1b[32m[+]\x1b[0m .gitignore dibuat dengan entri: ${requiredIgnores.join(', ')}`);
+  }
+
   console.log('\n✨ [Verity] Inisialisasi selesai! Anda dapat menjalankan:');
   console.log('   - verity check        : untuk audit spec drift');
   console.log('   - verity link <spec>  : untuk menyegel brief ke kode');
   console.log('   - verity mcp          : untuk menjalankan mode AI Agent MCP Server\n');
 
-  return { docsCreated, hookInstalled, instructionsInstalled, agentHooksInstalled, skillsInstalled };
+  return { docsCreated, hookInstalled, instructionsInstalled, agentHooksInstalled, skillsInstalled, gitignoreUpdated };
 }

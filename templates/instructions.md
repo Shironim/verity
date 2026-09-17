@@ -31,12 +31,20 @@
 3. **Mandatory Post-Flight Provenance Sealing**:
    - When marking a task brief as `Completed`, you **MUST** seal the provenance:
      ```bash
-     verity link docs/brief/[category]-[slug].md path/to/file1.ext [path/to/file2.ext#symbol]
+     verity link docs/brief/YYYY-MM/[category]/[slug].md path/to/file1.ext [path/to/file2.ext#symbol]
      ```
      *(Or call MCP tool `verity_link`)*.
    - Never mark a brief as `Completed` without recording the Git HEAD commit SHA and AST fingerprint.
 
-4. **Normalized Fingerprint Awareness**:
+4. **Pre-Brief Spec Discovery**:
+   - Before drafting a new brief, always check for existing specifications or related anchors:
+     ```bash
+     verity find <keywords>
+     verity find --target path/to/file.ext
+     ```
+     *(Or call MCP tool `verity_find`)*.
+
+5. **Normalized Fingerprint Awareness**:
    - Verity normalizes tokens, stripping trivia (Prettier/Pint formatting, trailing commas, comments).
    - Only semantic code changes (renamed functions, modified expressions, altered logic) trigger `STALE` status.
 
@@ -48,6 +56,8 @@
 |---|---|---|
 | `verity_check` | Audits drift across all or target briefs. | At session start and before pull request creation. |
 | `verity_link` | Seals target files/symbols to markdown spec. | Immediately upon completing a task or brief. |
+| `verity_find` | Searches briefs by keyword, code target, category, or month. | Before creating briefs or when discovering responsible specs. |
 | `verity_status` | Returns total briefs, total anchors, and git state. | For high-level project health checks. |
 | `verity_reconcile_diff` | Extracts git diff since baseline provenance. | When investigating why a brief became `STALE`. |
 | `verity_sync_manifest` | Synchronizes `docs/brief/INDEX.md`. | After creating or updating briefs. |
+| `verity_init` | Initializes Verity environment, hooks, and skills. | In fresh workspaces or during onboarding. |

@@ -1,0 +1,39 @@
+{
+  "verity-pre-invocation": {
+    "enabled": true,
+    "PreInvocation": [
+      {
+        "type": "command",
+        "command": "node hooks/verity-pre-invocation.cjs",
+        "timeout": 5
+      }
+    ]
+  },
+  "verity-mutation-guard": {
+    "enabled": true,
+    "PreToolUse": [
+      {
+        "matcher": "replace_file_content|write_to_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/verity-mutation-guard.cjs",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "replace_file_content|write_to_file",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node hooks/verity-mutation-guard.cjs --post",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
